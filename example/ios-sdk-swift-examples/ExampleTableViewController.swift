@@ -11,11 +11,11 @@ class ExampleTableViewController: UITableViewController {
     
     var examplesList = [String]()
     
-    @IBAction func unwindToMenu(segue: UIStoryboardSegue) {}
+    @IBAction func unwindToMenu(_ segue: UIStoryboardSegue) {}
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
         
 
         loadData()
@@ -40,31 +40,31 @@ class ExampleTableViewController: UITableViewController {
     // Normal table functions
     //
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return examplesList.count
     }
     
     // Sets the label texts for the table cells
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "ExampleTableViewCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! ExampleTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExampleTableViewCell
         let example = examplesList[indexPath.row]
         cell.labelForExamples.text = example
         return cell
     }
     
     // Identifier is same as the name in examplesList, that way the segue can be performed easily
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let identifier = examplesList[indexPath.row]
-        performSegueWithIdentifier(identifier, sender: nil)
+        performSegue(withIdentifier: identifier, sender: nil)
     }
     
     // Sets the title of the section
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Positioning"
     }
 }
