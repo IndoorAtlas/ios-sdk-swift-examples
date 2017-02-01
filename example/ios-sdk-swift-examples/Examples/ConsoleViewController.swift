@@ -22,21 +22,21 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
         super.viewDidLoad()
         
         // Show spinner while waiting for location information from IALocationManager
-        SVProgressHUD.showWithStatus(NSLocalizedString("Waiting for location", comment: ""))
+        SVProgressHUD.show(withStatus: NSLocalizedString("Waiting for location", comment: ""))
     }
     
     // Hide status bar
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     
     // This function is called whenever new location is received from IALocationManager
-    func indoorLocationManager(manager: IALocationManager, didUpdateLocations locations: [AnyObject]) {
+    func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [Any]) {
         
         
         // Check if the HUD status is already changed to "Printing to console" if not, change it
         if !HUDstatusChanged {
-            SVProgressHUD.showWithStatus(NSLocalizedString("Printing to console", comment: ""))
+            SVProgressHUD.show(withStatus: NSLocalizedString("Printing to console", comment: ""))
             HUDstatusChanged = true
         }
         
@@ -63,22 +63,22 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
     }
     
     // When view appears start requesting location updates
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        UIApplication.sharedApplication().statusBarHidden = true
+        UIApplication.shared.isStatusBarHidden = true
 
         requestLocation()
     }
     
     // When view disappears dismiss SVProgressHUD and stop updating the location
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         manager.stopUpdatingLocation()
         manager.delegate = nil
         
-        UIApplication.sharedApplication().statusBarHidden = false
+        UIApplication.shared.isStatusBarHidden = false
         
         SVProgressHUD.dismiss()
     }

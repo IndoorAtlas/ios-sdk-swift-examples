@@ -25,16 +25,16 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         super.viewDidLoad()
         
         // Show spinner while waiting for location information from IALocationManager
-        SVProgressHUD.showWithStatus(NSLocalizedString("Waiting for location data", comment: ""))
+        SVProgressHUD.show(withStatus: NSLocalizedString("Waiting for location data", comment: ""))
     }
     
     // Hide status bar
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     
     // This function is called whenever new location is received from IALocationManager
-    func indoorLocationManager(manager: IALocationManager, didUpdateLocations locations: [AnyObject]) {
+    func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [Any]) {
         
         SVProgressHUD.dismiss()
         
@@ -42,16 +42,16 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         let l = locations.last as! IALocation
         
         // The accuracy of coordinate position depends on the placement of floor plan image.
-        let point = floorPlan.coordinateToPoint((l.location?.coordinate)!)
+        let point = floorPlan.coordinate(toPoint: (l.location?.coordinate)!)
         
         // Animate circle with duration 0 or 0.35 depending if the circle is hidden or not
-        UIView.animateWithDuration(self.circle.hidden ? 0 : 0.35) {
+        UIView.animate(withDuration: self.circle.isHidden ? 0 : 0.35, animations: {
             self.circle.center = point
-        }
-        circle.hidden = false
+        }) 
+        circle.isHidden = false
     }
     
-    func indoorLocationManager(manager: IALocationManager, didEnterRegion region: IARegion) {
+    func indoorLocationManager(_ manager: IALocationManager, didEnter region: IARegion) {
         
         // If the region type is different than kIARegionTypeFloorPlan app quits
         guard region.type == kIARegionTypeFloorPlan else { return }
@@ -61,17 +61,17 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
     }
     
     // Function to fetch floorplan with an ID
-    func fetchFloorplanWithId(floorPlanId:String) {
-        floorplanFetch = resourceManager.fetchFloorPlanWithId(floorPlanId) { (floorplan, error) in
+    func fetchFloorplanWithId(_ floorPlanId:String) {
+        floorplanFetch = resourceManager.fetchFloorPlan(withId: floorPlanId) { (floorplan, error) in
             
             // If there is an error, print error. Else fetch the floorplan image with the floorplan URL
             if (error != nil) {
-                print(error)
+                print(error as Any)
                 
             } else {
-                self.imageFetch = self.resourceManager.fetchFloorPlanImageWithUrl((floorplan?.imageUrl)!, andCompletion: { (data, error) in
+                self.imageFetch = self.resourceManager.fetchFloorPlanImage(with: (floorplan?.imageUrl)!, andCompletion: { (data, error) in
                     if (error != nil) {
-                        print(error)
+                        print(error as Any)
                     } else {
                         
                         // Initialize the image with the data from the server
@@ -79,18 +79,18 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
                         
                         // Scale the image and do CGAffineTransform
                         let scale = fmin(1.0, fmin(self.view.bounds.size.width / CGFloat((floorplan?.width)!), self.view.bounds.size.height / CGFloat((floorplan?.height)!)))
-                        let t:CGAffineTransform = CGAffineTransformMakeScale(scale, scale)
-                        self.imageView.transform = CGAffineTransformIdentity
+                        let t:CGAffineTransform = CGAffineTransform(scaleX: scale, y: scale)
+                        self.imageView.transform = CGAffineTransform.identity
                         self.imageView.image = image
-                        self.imageView.frame = CGRectMake(0, 0, CGFloat((floorplan?.width)!), CGFloat((floorplan?.height)!))
+                        self.imageView.frame = CGRect(x: 0, y: 0, width: CGFloat((floorplan?.width)!), height: CGFloat((floorplan?.height)!))
                         self.imageView.transform = t
                         self.imageView.center = self.view.center
                         
-                        self.imageView.backgroundColor = UIColor.whiteColor()
+                        self.imageView.backgroundColor = UIColor.white
                         
                         // Scale the blue dot as well
                         let size = CGFloat((floorplan?.meterToPixelConversion)!)
-                        self.circle.transform = CGAffineTransformMakeScale(size, size)
+                        self.circle.transform = CGAffineTransform(scaleX: size, y: size)
                     }
                 })
                 
@@ -117,7 +117,7 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
     }
     
     // When view will appear add imageview, set up the circle and start requesting location
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         // Add imageview as a subview to the current view
@@ -125,26 +125,26 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         view.addSubview(imageView)
         
         // Settings for the dot that is displayed on the image
-        circle = UIView(frame: CGRectMake(0, 0, 1, 1))
+        circle = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
         circle.backgroundColor = UIColor.init(colorLiteralRed: 0, green: 0.647, blue: 0.961, alpha: 1.0)
-        circle.hidden = true
+        circle.isHidden = true
         imageView.addSubview(circle)
         
-        UIApplication.sharedApplication().statusBarHidden = true
+        UIApplication.shared.isStatusBarHidden = true
 
         // Start requesting updates
         requestLocation()
     }
     
     // When view will disappear, stop updating location and dismiss SVProgressHUD
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         manager.stopUpdatingLocation()
         manager.delegate = nil
         imageView.image = nil
         
-        UIApplication.sharedApplication().statusBarHidden = false
+        UIApplication.shared.isStatusBarHidden = false
         
         SVProgressHUD.dismiss()
     }

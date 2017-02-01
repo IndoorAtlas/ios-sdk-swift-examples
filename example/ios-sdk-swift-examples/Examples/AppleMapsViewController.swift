@@ -24,16 +24,16 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
         super.viewDidLoad()
         
         // Show spinner while waiting for location information from IALocationManager
-        SVProgressHUD.showWithStatus(NSLocalizedString("Waiting for location data", comment: ""))
+        SVProgressHUD.show(withStatus: NSLocalizedString("Waiting for location data", comment: ""))
     }
     
     // Hide status bar
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     
     // This function is called whenever new location is received from IALocationManager
-    func indoorLocationManager(manager: IALocationManager, didUpdateLocations locations: [AnyObject]) {
+    func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [Any]) {
         
         // Conversion to IALocation
         let l = locations.last as! IALocation
@@ -45,11 +45,11 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
             
             // Remove all previous overlays from the map and add new
             map.removeOverlays(map.overlays)
-            circle = MKCircle(centerCoordinate: newLocation, radius: 2)
-            map.addOverlay(circle)
+            circle = MKCircle(center: newLocation, radius: 2)
+            map.add(circle)
             
             // Ask Map Kit for a camera that looks at the location from an altitude of 300 meters above the eye coordinates.
-            camera = MKMapCamera(lookingAtCenterCoordinate: (l.location?.coordinate)!, fromEyeCoordinate: (l.location?.coordinate)!, eyeAltitude: 300)
+            camera = MKMapCamera(lookingAtCenter: (l.location?.coordinate)!, fromEyeCoordinate: (l.location?.coordinate)!, eyeAltitude: 300)
             
             // Assign the camera to your map view.
             map.camera = camera;
@@ -57,7 +57,7 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
     }
     
     // This function is used for rendering the overlay components
-    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         
         var circleRenderer = MKCircleRenderer()
         
@@ -87,21 +87,21 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
     }
     
     // When the view will appear, set up the mapView and its delegate and start requesting location
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         map.frame = view.bounds
         view.addSubview(map)
-        view.sendSubviewToBack(map)
+        view.sendSubview(toBack: map)
         map.delegate = self
         
-        UIApplication.sharedApplication().statusBarHidden = true
+        UIApplication.shared.isStatusBarHidden = true
         
         requestLocation()
     }
     
     // When the view will disappear, stop updating location, remove map from the view and dismiss the HUD
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         self.manager.stopUpdatingLocation()
@@ -110,7 +110,7 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
         map.delegate = nil
         map.removeFromSuperview()
         
-        UIApplication.sharedApplication().statusBarHidden = false
+        UIApplication.shared.isStatusBarHidden = false
 
         
         SVProgressHUD.dismiss()

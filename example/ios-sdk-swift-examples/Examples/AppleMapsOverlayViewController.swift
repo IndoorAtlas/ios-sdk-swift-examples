@@ -48,22 +48,22 @@ class MapOverlayRenderer: MKOverlayRenderer {
         super.init(overlay: overlay)
     }
     
-    override func drawMapRect(mapRect: MKMapRect, zoomScale: MKZoomScale, inContext ctx: CGContext) {
+    override func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in ctx: CGContext) {
         
         let theMapRect = overlay.boundingMapRect
-        let theRect = rectForMapRect(theMapRect)
+        let theRect = rect(for: theMapRect)
         
         // Rotate around top left corner
-        CGContextRotateCTM(ctx, CGFloat(degreesToRadians(floorPlan.bearing)));
+        ctx.rotate(by: CGFloat(degreesToRadians(floorPlan.bearing)));
         
         // Draw the floorplan image
         UIGraphicsPushContext(ctx)
-        overlayImage.drawInRect(theRect, blendMode: CGBlendMode.Normal, alpha: 1.0)
+        overlayImage.draw(in: theRect, blendMode: CGBlendMode.normal, alpha: 1.0)
         UIGraphicsPopContext();
     }
     
     // Function to convert degrees to radians
-    func degreesToRadians(x:Double) -> Double {
+    func degreesToRadians(_ x:Double) -> Double {
         return (M_PI * x / 180.0)
     }
 }
@@ -72,7 +72,7 @@ class MapOverlayRenderer: MKOverlayRenderer {
 // View controller for Apple Maps Overlay Example
 class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegate, MKMapViewDelegate {
     
-    var floorPlanFetch:AnyObject!
+    var floorPlanFetch:IAFetchTask!
     var imageFetch:AnyObject!
     
     var fpImage = UIImage()
@@ -90,22 +90,22 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         super.viewDidLoad()
         
         // Show spinner while waiting for location information from IALocationManager
-        SVProgressHUD.showWithStatus(NSLocalizedString("Waiting for location data", comment: ""))
+        SVProgressHUD.show(withStatus: NSLocalizedString("Waiting for location data", comment: ""))
     }
     
     // Hide status bar
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     
     // Function to change the map overlay
     func changeMapOverlay() {
         let overlay = MapOverlay(floorPlan: floorPlan)
-        map.addOverlay(overlay)
+        map.add(overlay)
     }
     
     // Function for rendering overlay objects
-    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         var circleRenderer:MKCircleRenderer!
         
         // If it is possible to convert overlay to MKCircle then render the circle with given properties. Else if the overlay is class of MapOverlay set up its own MapOverlayRenderer. Else render red circle.
@@ -125,7 +125,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         }
     }
     
-    func indoorLocationManager(manager: IALocationManager, didUpdateLocations locations: [AnyObject]) {
+    func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [Any]) {
         
         // Convert last location to IALocation
         let l = locations.last as! IALocation
@@ -136,12 +136,12 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
             SVProgressHUD.dismiss()
             
             // Remove the previous circle overlay and set up a new overlay
-            map.removeOverlay(circle as MKOverlay)
-            circle = MKCircle(centerCoordinate: newLocation, radius: 1)
-            map.addOverlay(circle)
+            map.remove(circle as MKOverlay)
+            circle = MKCircle(center: newLocation, radius: 1)
+            map.add(circle)
             
             // Ask Map Kit for a camera that looks at the location from an altitude of 300 meters above the eye coordinates.
-            camera = MKMapCamera(lookingAtCenterCoordinate: (l.location?.coordinate)!, fromEyeCoordinate: (l.location?.coordinate)!, eyeAltitude: 300)
+            camera = MKMapCamera(lookingAtCenter: (l.location?.coordinate)!, fromEyeCoordinate: (l.location?.coordinate)!, eyeAltitude: 300)
             
             // Assign the camera to your map view.
             map.camera = camera;
@@ -149,10 +149,10 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     }
     
     // Fetches image with the given IAFloorplan
-    func fetchImage(floorPlan:IAFloorPlan) {
-        imageFetch = self.resourceManager.fetchFloorPlanImageWithUrl(floorPlan.imageUrl!, andCompletion: { (data, error) in
+    func fetchImage(_ floorPlan:IAFloorPlan) {
+        imageFetch = self.resourceManager.fetchFloorPlanImage(with: floorPlan.imageUrl!, andCompletion: { (data, error) in
             if (error != nil) {
-                print(error)
+                print(error as Any)
             } else {
                 self.fpImage = UIImage.init(data: data!)!
                 self.changeMapOverlay()
@@ -160,7 +160,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         })
     }
     
-    func indoorLocationManager(manager: IALocationManager, didEnterRegion region: IARegion) {
+    func indoorLocationManager(_ manager: IALocationManager, didEnter region: IARegion) {
         
         guard region.type == kIARegionTypeFloorPlan else { return }
         
@@ -172,13 +172,13 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         }
         
         // Fetches the floorplan for the given region identifier
-        floorPlanFetch = self.resourceManager.fetchFloorPlanWithId(region.identifier, andCompletion: { (floorplan, error) in
+        floorPlanFetch = self.resourceManager.fetchFloorPlan(withId: region.identifier, andCompletion: { (floorplan, error) in
             
             if (error == nil) {
                 self.floorPlan = floorplan!
                 self.fetchImage(floorplan!)
             } else {
-                print("There was an error during floorplan fetch: ", error)
+                print("There was an error during floorplan fetch: ", error as Any)
             }
         })
     }
@@ -197,7 +197,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     }
     
     // Called when view will appear and sets up the map view and its bounds and delegate. Also requests location
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         updateCamera = true
         
@@ -205,15 +205,15 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         map.frame = view.bounds
         map.delegate = self
         view.addSubview(map)
-        view.sendSubviewToBack(map)
+        view.sendSubview(toBack: map)
         
-        UIApplication.sharedApplication().statusBarHidden = true
+        UIApplication.shared.isStatusBarHidden = true
         
         requestLocation()
     }
     
     // Called when view will disappear and will remove the map from the view and sets its delegate to nil
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         locationManager.stopUpdatingLocation()
@@ -222,7 +222,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         map.delegate = nil
         map.removeFromSuperview()
         
-        UIApplication.sharedApplication().statusBarHidden = false
+        UIApplication.shared.isStatusBarHidden = false
         
         SVProgressHUD.dismiss()
     }
