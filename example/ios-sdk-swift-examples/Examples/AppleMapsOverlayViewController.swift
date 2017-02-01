@@ -72,7 +72,7 @@ class MapOverlayRenderer: MKOverlayRenderer {
 // View controller for Apple Maps Overlay Example
 class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegate, MKMapViewDelegate {
     
-    var floorPlanFetch:AnyObject!
+    var floorPlanFetch:IAFetchTask!
     var imageFetch:AnyObject!
     
     var fpImage = UIImage()
@@ -125,7 +125,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         }
     }
     
-    func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [AnyObject]) {
+    func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [Any]) {
         
         // Convert last location to IALocation
         let l = locations.last as! IALocation
@@ -152,7 +152,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     func fetchImage(_ floorPlan:IAFloorPlan) {
         imageFetch = self.resourceManager.fetchFloorPlanImage(with: floorPlan.imageUrl!, andCompletion: { (data, error) in
             if (error != nil) {
-                print(error)
+                print(error as Any)
             } else {
                 self.fpImage = UIImage.init(data: data!)!
                 self.changeMapOverlay()
@@ -178,7 +178,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
                 self.floorPlan = floorplan!
                 self.fetchImage(floorplan!)
             } else {
-                print("There was an error during floorplan fetch: ", error)
+                print("There was an error during floorplan fetch: ", error as Any)
             }
         })
     }

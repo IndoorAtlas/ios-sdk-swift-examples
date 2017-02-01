@@ -31,7 +31,7 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
     }
     
     // This function is called whenever new location is received from IALocationManager
-    func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [AnyObject]) {
+    func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [Any]) {
         
         
         // Check if the HUD status is already changed to "Printing to console" if not, change it

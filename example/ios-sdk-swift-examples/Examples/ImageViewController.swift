@@ -34,7 +34,7 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
     }
     
     // This function is called whenever new location is received from IALocationManager
-    func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [AnyObject]) {
+    func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [Any]) {
         
         SVProgressHUD.dismiss()
         
@@ -66,12 +66,12 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
             
             // If there is an error, print error. Else fetch the floorplan image with the floorplan URL
             if (error != nil) {
-                print(error)
+                print(error as Any)
                 
             } else {
                 self.imageFetch = self.resourceManager.fetchFloorPlanImage(with: (floorplan?.imageUrl)!, andCompletion: { (data, error) in
                     if (error != nil) {
-                        print(error)
+                        print(error as Any)
                     } else {
                         
                         // Initialize the image with the data from the server
