@@ -18,7 +18,7 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
     var circle = MKCircle()
     
     // Manager for IALocationManager
-    var manager = IALocationManager()
+    var manager = IALocationManager.sharedInstance()
     
     override func viewDidLoad() {
         super.viewDidLoad()

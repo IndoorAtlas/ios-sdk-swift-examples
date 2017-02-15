@@ -83,7 +83,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     var circle = MKCircle()
     
     var floorPlan = IAFloorPlan()
-    var locationManager = IALocationManager()
+    var locationManager = IALocationManager.sharedInstance()
     var resourceManager = IAResourceManager()
     
     override func viewDidLoad() {
