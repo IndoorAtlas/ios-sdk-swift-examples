@@ -5,9 +5,7 @@ use_frameworks!
 
 target 'ios-sdk-swift-examples' do
 
-source 'https://github.com/IndoorAtlas/CocoaPods-Specs'
-pod 'IndoorAtlas'
-
+pod 'IndoorAtlas', '~> 2.3.1'
 pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 
 end

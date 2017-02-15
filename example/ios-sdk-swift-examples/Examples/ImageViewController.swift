@@ -15,7 +15,7 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
     var floorPlan = IAFloorPlan()
     var imageView = UIImageView()
     var circle = UIView()
-    var manager = IALocationManager()
+    var manager = IALocationManager.sharedInstance()
     var resourceManager = IAResourceManager()
     
     var imageFetch:AnyObject!

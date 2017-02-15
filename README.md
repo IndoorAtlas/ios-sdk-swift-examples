@@ -1,6 +1,6 @@
 
 ## iOS SDK Swift Examples
-Swift examples for IndoorAtlas iOS SDK 2.1
+Swift examples for IndoorAtlas iOS SDK 2.3
 
 ### Quick Start with CocoaPods
 

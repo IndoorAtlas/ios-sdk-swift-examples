@@ -13,7 +13,7 @@ import SVProgressHUD
 class ConsoleViewController: UIViewController, IALocationManagerDelegate {
     
     // Manager for IALocationManager
-    var manager = IALocationManager()
+    var manager = IALocationManager.sharedInstance()
     
     // Bool for checking if the HUD has been already changed to "Printing to console"
     var HUDstatusChanged = false
