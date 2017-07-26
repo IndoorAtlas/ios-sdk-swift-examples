@@ -10,30 +10,24 @@ import MapKit
 import IndoorAtlas
 import SVProgressHUD
 
+// Function to convert degrees to radians
+func degreesToRadians(_ x:Double) -> Double {
+    return (Double.pi * x / 180.0)
+}
+
 // Class for map overlay object
 class MapOverlay: NSObject, MKOverlay {
     var coordinate: CLLocationCoordinate2D
     var boundingMapRect: MKMapRect
     
-    var center: CLLocationCoordinate2D
-    var rect: MKMapRect
     
     // Initializer for the class
-    init(floorPlan: IAFloorPlan) {
+    init(floorPlan: IAFloorPlan, andRotatedRect rotated: CGRect) {
         coordinate = floorPlan.center
-        boundingMapRect = MKMapRect()
-        rect = MKMapRect()
-        center = floorPlan.center
-        
-        //Width and height in MapPoints for the floorplan
-        let mapPointsPerMeter = MKMapPointsPerMeterAtLatitude(center.latitude)
-        let widthMapPoints = floorPlan.widthMeters * Float(mapPointsPerMeter)
-        let heightMapPoints = floorPlan.heightMeters * Float(mapPointsPerMeter)
         
         // Area coordinates for the overlay
         let topLeft = MKMapPointForCoordinate(floorPlan.topLeft)
-        rect = MKMapRectMake(topLeft.x, topLeft.y, Double(widthMapPoints), Double(heightMapPoints))
-        boundingMapRect = rect
+        boundingMapRect = MKMapRectMake(topLeft.x + Double(rotated.origin.x), topLeft.y + Double(rotated.origin.y), Double(rotated.size.width), Double(rotated.size.height))
     }
 }
 
@@ -41,30 +35,29 @@ class MapOverlay: NSObject, MKOverlay {
 class MapOverlayRenderer: MKOverlayRenderer {
     var overlayImage: UIImage
     var floorPlan: IAFloorPlan
+    var rotated: CGRect
     
-    init(overlay:MKOverlay, overlayImage:UIImage, fp: IAFloorPlan) {
+    init(overlay:MKOverlay, overlayImage:UIImage, fp: IAFloorPlan, rotated: CGRect) {
         self.overlayImage = overlayImage
         self.floorPlan = fp
+        self.rotated = rotated
         super.init(overlay: overlay)
     }
     
     override func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in ctx: CGContext) {
         
-        let theMapRect = overlay.boundingMapRect
-        let theRect = rect(for: theMapRect)
+        // Width and height in MapPoints for the floorplan
+        let mapPointsPerMeter = MKMapPointsPerMeterAtLatitude(floorPlan.center.latitude)
+        let rect = CGRect(x: 0, y: 0, width: Double(floorPlan.widthMeters) * mapPointsPerMeter, height: Double(floorPlan.heightMeters) * mapPointsPerMeter)
+        ctx.translateBy(x: -rotated.origin.x, y: -rotated.origin.y)
         
         // Rotate around top left corner
         ctx.rotate(by: CGFloat(degreesToRadians(floorPlan.bearing)));
         
         // Draw the floorplan image
         UIGraphicsPushContext(ctx)
-        overlayImage.draw(in: theRect, blendMode: CGBlendMode.normal, alpha: 1.0)
+        overlayImage.draw(in: rect, blendMode: CGBlendMode.normal, alpha: 1.0)
         UIGraphicsPopContext();
-    }
-    
-    // Function to convert degrees to radians
-    func degreesToRadians(_ x:Double) -> Double {
-        return (M_PI * x / 180.0)
     }
 }
 
@@ -86,6 +79,8 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     var locationManager = IALocationManager.sharedInstance()
     var resourceManager = IAResourceManager()
     
+    var rotated = CGRect()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -100,7 +95,16 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     
     // Function to change the map overlay
     func changeMapOverlay() {
-        let overlay = MapOverlay(floorPlan: floorPlan)
+        
+        //Width and height in MapPoints for the floorplan
+        let mapPointsPerMeter = MKMapPointsPerMeterAtLatitude(floorPlan.center.latitude)
+        let widthMapPoints = floorPlan.widthMeters * Float(mapPointsPerMeter)
+        let heightMapPoints = floorPlan.heightMeters * Float(mapPointsPerMeter)
+        
+        let cgRect = CGRect(x: 0, y: 0, width: CGFloat(widthMapPoints), height: CGFloat(heightMapPoints))
+        let a = degreesToRadians(self.floorPlan.bearing)
+        rotated = cgRect.applying(CGAffineTransform(rotationAngle: CGFloat(a)));
+        let overlay = MapOverlay(floorPlan: floorPlan, andRotatedRect: rotated)
         map.add(overlay)
     }
     
@@ -115,7 +119,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
             return circleRenderer
             
         } else if overlay is MapOverlay {
-            let overlayView = MapOverlayRenderer(overlay: overlay, overlayImage: fpImage, fp: floorPlan)
+            let overlayView = MapOverlayRenderer(overlay: overlay, overlayImage: fpImage, fp: floorPlan, rotated: rotated)
             return overlayView
             
         } else {
