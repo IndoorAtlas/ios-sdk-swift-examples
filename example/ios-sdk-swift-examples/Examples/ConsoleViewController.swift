@@ -55,8 +55,10 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
         manager.delegate = self
         
         // Optionally, initial location
-        let location: IALocation = IALocation(floorPlanId: kFloorplanId)
-        manager.location = location
+        if !kFloorplanId.isEmpty {
+            let location = IALocation(floorPlanId: kFloorplanId)
+            manager.location = location
+        }
         
         // Request location updates
         manager.startUpdatingLocation()

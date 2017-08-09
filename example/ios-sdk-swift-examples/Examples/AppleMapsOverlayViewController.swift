@@ -190,8 +190,10 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     // Authenticate to IndoorAtlas services and request location updates
     func requestLocation() {
         
-        let location = IALocation(floorPlanId: kFloorplanId)
-        locationManager.location = location
+        if !kFloorplanId.isEmpty {
+            let location = IALocation(floorPlanId: kFloorplanId)
+            locationManager.location = location
+        }
         
         locationManager.delegate = self
         

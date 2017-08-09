@@ -106,8 +106,10 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         manager.delegate = self
         
         // Optionally, initial location
-        let location = IALocation(floorPlanId: kFloorplanId)
-        manager.location = location
+        if !kFloorplanId.isEmpty {
+            let location = IALocation(floorPlanId: kFloorplanId)
+            manager.location = location
+        }
         
         // Initialize ResourceManager
         resourceManager = IAResourceManager(locationManager: manager)!
