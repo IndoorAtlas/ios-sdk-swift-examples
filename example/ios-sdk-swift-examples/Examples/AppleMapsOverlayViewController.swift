@@ -81,6 +81,8 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     
     var rotated = CGRect()
     
+    var label = UILabel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -150,6 +152,10 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
             // Assign the camera to your map view.
             map.camera = camera;
         }
+        
+        if let traceId = manager.extraInfo?[kIATraceId] as? NSString {
+            label.text = "Trace ID: \(traceId)"
+        }
     }
     
     // Fetches image with the given IAFloorplan
@@ -213,6 +219,14 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         view.addSubview(map)
         view.sendSubview(toBack: map)
         
+        var frame = view.bounds
+        frame.origin.y = 64
+        frame.size.height = 42
+        label.frame = frame
+        label.textAlignment = NSTextAlignment.center
+        label.numberOfLines = 0
+        view.addSubview(label)
+        
         UIApplication.shared.isStatusBarHidden = true
         
         requestLocation()
@@ -227,6 +241,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         
         map.delegate = nil
         map.removeFromSuperview()
+        label.removeFromSuperview()
         
         UIApplication.shared.isStatusBarHidden = false
         

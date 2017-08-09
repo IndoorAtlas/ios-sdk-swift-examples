@@ -17,6 +17,8 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
     var camera = MKMapCamera()
     var circle = MKCircle()
     
+    var label = UILabel()
+    
     // Manager for IALocationManager
     var manager = IALocationManager.sharedInstance()
     
@@ -53,6 +55,10 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
             
             // Assign the camera to your map view.
             map.camera = camera;
+        }
+        
+        if let traceId = manager.extraInfo?[kIATraceId] as? NSString {
+            label.text = "Trace ID: \(traceId)"
         }
     }
     
@@ -97,6 +103,14 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
         view.sendSubview(toBack: map)
         map.delegate = self
         
+        var frame = view.bounds
+        frame.origin.y = 64
+        frame.size.height = 42
+        label.frame = frame
+        label.textAlignment = NSTextAlignment.center
+        label.numberOfLines = 0
+        view.addSubview(label)
+        
         UIApplication.shared.isStatusBarHidden = true
         
         requestLocation()
@@ -111,6 +125,7 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
         manager.delegate = nil
         map.delegate = nil
         map.removeFromSuperview()
+        label.removeFromSuperview()
         
         UIApplication.shared.isStatusBarHidden = false
 

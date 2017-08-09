@@ -21,6 +21,8 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
     var imageFetch:AnyObject!
     var floorplanFetch:AnyObject!
     
+    var label = UILabel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,6 +51,10 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
             self.circle.center = point
         }) 
         circle.isHidden = false
+        
+        if let traceId = manager.extraInfo?[kIATraceId] as? NSString {
+            label.text = "Trace ID: \(traceId)"
+        }
     }
     
     func indoorLocationManager(_ manager: IALocationManager, didEnter region: IARegion) {
@@ -132,6 +138,14 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         circle.isHidden = true
         imageView.addSubview(circle)
         
+        var frame = view.bounds
+        frame.origin.y = 64
+        frame.size.height = 42
+        label.frame = frame
+        label.textAlignment = NSTextAlignment.center
+        label.numberOfLines = 0
+        view.addSubview(label)
+        
         UIApplication.shared.isStatusBarHidden = true
 
         // Start requesting updates
@@ -145,6 +159,8 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         manager.stopUpdatingLocation()
         manager.delegate = nil
         imageView.image = nil
+        
+        label.removeFromSuperview()
         
         UIApplication.shared.isStatusBarHidden = false
         
