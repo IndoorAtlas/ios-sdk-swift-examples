@@ -63,7 +63,7 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         guard region.type == kIARegionTypeFloorPlan else { return }
         
         // Fetches floorplan with the given region identifier
-        fetchFloorplanWithId(region.identifier!)
+        fetchFloorplanWithId(region.identifier)
     }
     
     // Function to fetch floorplan with an ID
