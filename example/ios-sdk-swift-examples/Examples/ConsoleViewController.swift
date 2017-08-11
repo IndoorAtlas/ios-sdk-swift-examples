@@ -18,6 +18,8 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
     // Bool for checking if the HUD has been already changed to "Printing to console"
     var HUDstatusChanged = false
     
+    var traceIdPrinted = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,6 +45,11 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
         // Convert last location to IALocation
         let l = locations.last as! IALocation
         
+        if !traceIdPrinted, let traceId = manager.extraInfo?[kIATraceId] as? NSString {
+            print("Trace ID: \(traceId)")
+            traceIdPrinted = true
+        }
+        
         // The accuracy of coordinate position depends on the placement of floor plan image.
         print("Position changed to coordinate (lat,lon): ", (l.location?.coordinate.latitude)!, (l.location?.coordinate.longitude)!)
 
@@ -55,8 +62,10 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
         manager.delegate = self
         
         // Optionally, initial location
-        let location: IALocation = IALocation(floorPlanId: kFloorplanId)
-        manager.location = location
+        if !kFloorplanId.isEmpty {
+            let location = IALocation(floorPlanId: kFloorplanId)
+            manager.location = location
+        }
         
         // Request location updates
         manager.startUpdatingLocation()

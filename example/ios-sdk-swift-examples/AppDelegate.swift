@@ -16,8 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         guard kAPIKey.characters.count > 0 || kAPISecret.characters.count > 0 else { print("Configure API key and API secret inside ApiKeys.swift"); return false}
         
-        guard kFloorplanId.characters.count > 0 else { print("Configure floor plan id inside ApiKeys.swift"); return false}
-        
         authenticateIALocationManager()
         
         return true
