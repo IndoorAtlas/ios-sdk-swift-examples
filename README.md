@@ -22,7 +22,7 @@ There are also similar examples for [Objective-C](https://github.com/IndoorAtlas
 
 * Set up your [free developer account](https://app.indooratlas.com) in the IndoorAtlas developer portal. Help with getting started is available in the [Quick Start Guide](http://docs.indooratlas.com/quick-start-guide.html).
 * To enable IndoorAtlas indoor positioning in a venue, the venue needs to be fingerprinted with the [IndoorAtlas MapCreator 2](https://play.google.com/store/apps/details?id=com.indooratlas.android.apps.jaywalker) tool.
-* To start developing your own app, create and [API key](https://app.indooratlas.com/apps).
+* To start developing your own app, create an [API key](https://app.indooratlas.com/apps).
 
 ### Get started by using CocoaPods
 
