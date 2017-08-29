@@ -34,7 +34,7 @@ pod install
 open ios-sdk-swift-examples.xcworkspace
 ```
 
-Set your API keys in `ApiKeys.h`. API keys can be generated at https://app.indooratlas.com/apps
+Set your API keys in `ApiKeys.swift`. API keys can be generated at https://app.indooratlas.com/apps
 
 ### Manual IndoorAtlas framework download
 
