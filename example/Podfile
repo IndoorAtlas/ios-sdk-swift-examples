@@ -5,7 +5,7 @@ use_frameworks!
 
 target 'ios-sdk-swift-examples' do
 
-pod 'IndoorAtlas', '~> 2.5.1'
+pod 'IndoorAtlas', '~> 2.5.2'
 pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 
 end

@@ -60,7 +60,7 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
     func indoorLocationManager(_ manager: IALocationManager, didEnter region: IARegion) {
         
         // If the region type is different than kIARegionTypeFloorPlan app quits
-        guard region.type == kIARegionTypeFloorPlan else { return }
+        guard region.type == ia_region_type.iaRegionTypeFloorPlan else { return }
         
         // Fetches floorplan with the given region identifier
         fetchFloorplanWithId(region.identifier)

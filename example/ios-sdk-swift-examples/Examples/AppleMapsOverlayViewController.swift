@@ -172,7 +172,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     
     func indoorLocationManager(_ manager: IALocationManager, didEnter region: IARegion) {
         
-        guard region.type == kIARegionTypeFloorPlan else { return }
+        guard region.type == ia_region_type.iaRegionTypeFloorPlan else { return }
         
         updateCamera = true
         
