@@ -15,6 +15,7 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
     var floorPlan = IAFloorPlan()
     var imageView = UIImageView()
     var circle = UIView()
+    var accuracyCircle = UIView()
     var manager = IALocationManager.sharedInstance()
     var resourceManager = IAResourceManager()
     
@@ -27,7 +28,9 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         super.viewDidLoad()
         
         // Show spinner while waiting for location information from IALocationManager
-        SVProgressHUD.show(withStatus: NSLocalizedString("Waiting for location data", comment: ""))
+        DispatchQueue.main.async {
+            SVProgressHUD.show(withStatus: NSLocalizedString("Waiting for location data", comment: ""))
+        }
     }
     
     // This function is called whenever new location is received from IALocationManager
@@ -41,14 +44,28 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         // The accuracy of coordinate position depends on the placement of floor plan image.
         let point = floorPlan.coordinate(toPoint: (l.location?.coordinate)!)
         
+        
+        guard let accuracy = l.location?.horizontalAccuracy else { return }
+        let conversion = floorPlan.meterToPixelConversion
+        
+        let size = CGFloat(accuracy * Double(conversion))
+        
+        self.view.bringSubview(toFront: self.accuracyCircle)
+        self.view.bringSubview(toFront: self.circle)
+        
         // Animate circle with duration 0 or 0.35 depending if the circle is hidden or not
         UIView.animate(withDuration: self.circle.isHidden ? 0 : 0.35, animations: {
+            self.accuracyCircle.center = point
             self.circle.center = point
-        }) 
+            self.accuracyCircle.transform = CGAffineTransform(scaleX: CGFloat(size), y: CGFloat(size))
+
+        })
+
         circle.isHidden = false
+        accuracyCircle.isHidden = false
         
         if let traceId = manager.extraInfo?[kIATraceId] as? NSString {
-            label.text = "Trace ID: \(traceId)"
+            label.text = "TraceID: \n\(traceId)"
         }
     }
     
@@ -106,12 +123,6 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         // Point delegate to receiver
         manager.delegate = self
         
-        // Optionally, initial location
-        if !kFloorplanId.isEmpty {
-            let location = IALocation(floorPlanId: kFloorplanId)
-            manager.location = location
-        }
-        
         // Initialize ResourceManager
         resourceManager = IAResourceManager(locationManager: manager)!
         
@@ -128,16 +139,25 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         view.addSubview(imageView)
         
         // Settings for the dot that is displayed on the image
-        circle = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-        circle.backgroundColor = UIColor.init(colorLiteralRed: 0, green: 0.647, blue: 0.961, alpha: 1.0)
+        self.circle = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
+        self.circle.backgroundColor = UIColor.init(red: 22/255, green: 129/255, blue: 251/255, alpha: 1.0)
+        self.circle.layer.cornerRadius = self.circle.frame.size.width / 2
+        self.circle.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+        self.circle.layer.borderWidth = 0.1
         circle.isHidden = true
-        imageView.addSubview(circle)
         
-        var frame = view.bounds
-        frame.origin.y = 64
-        frame.size.height = 42
-        label.frame = frame
+        self.accuracyCircle = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
+        self.accuracyCircle.layer.cornerRadius = accuracyCircle.frame.width / 2
+        self.accuracyCircle.backgroundColor = UIColor(red: 22/255, green: 129/255, blue: 251/255, alpha: 0.2)
+        self.accuracyCircle.isHidden = true
+        self.accuracyCircle.layer.borderWidth = 0.005
+        self.accuracyCircle.layer.borderColor = UIColor(red: 22/255, green: 129/255, blue: 251/255, alpha: 0.3).cgColor
+        imageView.addSubview(self.accuracyCircle)
+        imageView.addSubview(circle)
+
+        label.frame = CGRect(x: 8, y: 24, width: view.bounds.width - 16, height: 34)
         label.textAlignment = NSTextAlignment.center
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
         view.addSubview(label)
         
