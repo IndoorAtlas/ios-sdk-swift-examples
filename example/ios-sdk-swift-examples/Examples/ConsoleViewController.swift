@@ -12,6 +12,8 @@ import SVProgressHUD
 // View controller for Console Print Example
 class ConsoleViewController: UIViewController, IALocationManagerDelegate {
     
+    @IBOutlet weak var logView: UITextView!
+    
     // Manager for IALocationManager
     var manager = IALocationManager.sharedInstance()
     
@@ -33,7 +35,7 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
         
         // Check if the HUD status is already changed to "Printing to console" if not, change it
         if !HUDstatusChanged {
-            SVProgressHUD.show(withStatus: NSLocalizedString("Printing to console", comment: ""))
+            SVProgressHUD.dismiss()
             HUDstatusChanged = true
         }
         
@@ -41,13 +43,34 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
         let l = locations.last as! IALocation
         
         if !traceIdPrinted, let traceId = manager.extraInfo?[kIATraceId] as? NSString {
-            print("Trace ID: \(traceId)")
+            addToLog("TraceID: \n\(traceId)")
             traceIdPrinted = true
         }
         
         // The accuracy of coordinate position depends on the placement of floor plan image.
-        print("Position changed to coordinate (lat,lon): ", (l.location?.coordinate.latitude)!, (l.location?.coordinate.longitude)!)
-
+        addToLog("Position changed to (lat, lon): \n\(l.location?.coordinate.latitude ?? 0.0), \(l.location?.coordinate.longitude ?? 0.0)")
+    }
+    
+    func indoorLocationManager(_ manager: IALocationManager, didEnter region: IARegion) {
+        switch region.type {
+        case .iaRegionTypeVenue:
+            addToLog("Entered venue: \n\(region.identifier)")
+        case .iaRegionTypeFloorPlan:
+            addToLog("Entered floor plan: \n\(region.identifier)")
+        default:
+            break
+        }
+    }
+    
+    func indoorLocationManager(_ manager: IALocationManager, didExitRegion region: IARegion) {
+        switch region.type {
+        case .iaRegionTypeVenue:
+            addToLog("Exited venue: \n\(region.identifier)")
+        case .iaRegionTypeFloorPlan:
+            addToLog("Exited floor plan: \n\(region.identifier)")
+        default:
+            break
+        }
     }
     
     // Authenticate to IndoorAtlas services and request location updates
@@ -81,6 +104,10 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
         manager.delegate = nil
                 
         SVProgressHUD.dismiss()
+    }
+    
+    func addToLog(_ text: String) {
+        logView.text = logView.text + "\n\n\(text)"
     }
 }
 

@@ -151,9 +151,26 @@
                     <view key="view" contentMode="scaleToFill" id="yLW-RE-zf3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="GdF-IY-Xs7">
+                                <rect key="frame" x="16" y="0.0" width="343" height="583"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="djZ-Hs-NNw" firstAttribute="top" secondItem="GdF-IY-Xs7" secondAttribute="bottom" constant="20" id="5hi-9a-gfG"/>
+                            <constraint firstItem="GdF-IY-Xs7" firstAttribute="top" secondItem="Zib-n1-XRF" secondAttribute="bottom" id="CdD-k4-e3l"/>
+                            <constraint firstItem="GdF-IY-Xs7" firstAttribute="leading" secondItem="yLW-RE-zf3" secondAttribute="leadingMargin" id="is1-rz-eRG"/>
+                            <constraint firstItem="GdF-IY-Xs7" firstAttribute="trailing" secondItem="yLW-RE-zf3" secondAttribute="trailingMargin" id="z35-po-rQE"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Console Log" id="jkF-WU-tcx"/>
+                    <connections>
+                        <outlet property="logView" destination="GdF-IY-Xs7" id="O3S-fT-fKY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="epn-Jl-jew" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
