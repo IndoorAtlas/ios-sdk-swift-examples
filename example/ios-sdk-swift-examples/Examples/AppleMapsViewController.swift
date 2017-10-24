@@ -29,11 +29,6 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
         SVProgressHUD.show(withStatus: NSLocalizedString("Waiting for location data", comment: ""))
     }
     
-    // Hide status bar
-    override var prefersStatusBarHidden : Bool {
-        return true
-    }
-    
     // This function is called whenever new location is received from IALocationManager
     func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [Any]) {
         
@@ -111,8 +106,6 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
         label.numberOfLines = 0
         view.addSubview(label)
         
-        UIApplication.shared.isStatusBarHidden = true
-        
         requestLocation()
     }
     
@@ -126,9 +119,6 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
         map.delegate = nil
         map.removeFromSuperview()
         label.removeFromSuperview()
-        
-        UIApplication.shared.isStatusBarHidden = false
-
         
         SVProgressHUD.dismiss()
     }

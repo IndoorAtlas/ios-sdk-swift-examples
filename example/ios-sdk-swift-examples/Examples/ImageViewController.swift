@@ -30,11 +30,6 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         SVProgressHUD.show(withStatus: NSLocalizedString("Waiting for location data", comment: ""))
     }
     
-    // Hide status bar
-    override var prefersStatusBarHidden : Bool {
-        return true
-    }
-    
     // This function is called whenever new location is received from IALocationManager
     func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [Any]) {
         
@@ -146,8 +141,6 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         label.numberOfLines = 0
         view.addSubview(label)
         
-        UIApplication.shared.isStatusBarHidden = true
-
         // Start requesting updates
         requestLocation()
     }
@@ -161,8 +154,6 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         imageView.image = nil
         
         label.removeFromSuperview()
-        
-        UIApplication.shared.isStatusBarHidden = false
         
         SVProgressHUD.dismiss()
     }

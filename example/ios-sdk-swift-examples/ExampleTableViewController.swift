@@ -17,7 +17,6 @@ class ExampleTableViewController: UITableViewController {
         super.viewDidLoad()
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
         
-
         loadData()
         setUpHUD()
     }
@@ -28,7 +27,7 @@ class ExampleTableViewController: UITableViewController {
     
     // Loads the example titles which are same as segue IDs
     func loadData() {
-        examplesList = ["Console Print", "Image View", "Apple Maps", "Apple Maps Overlay"]
+        examplesList = ["Console Print", "Image View", "Apple Maps", "Apple Maps Overlay", "Indoor-Outdoor"]
     }
     
     // Sets up the SVProgressHUD with a bit slower animation

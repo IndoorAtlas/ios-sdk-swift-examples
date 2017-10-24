@@ -26,12 +26,7 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
         // Show spinner while waiting for location information from IALocationManager
         SVProgressHUD.show(withStatus: NSLocalizedString("Waiting for location", comment: ""))
     }
-    
-    // Hide status bar
-    override var prefersStatusBarHidden : Bool {
-        return true
-    }
-    
+
     // This function is called whenever new location is received from IALocationManager
     func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [Any]) {
         
@@ -75,8 +70,6 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        UIApplication.shared.isStatusBarHidden = true
-
         requestLocation()
     }
     
@@ -86,9 +79,7 @@ class ConsoleViewController: UIViewController, IALocationManagerDelegate {
         
         manager.stopUpdatingLocation()
         manager.delegate = nil
-        
-        UIApplication.shared.isStatusBarHidden = false
-        
+                
         SVProgressHUD.dismiss()
     }
 }

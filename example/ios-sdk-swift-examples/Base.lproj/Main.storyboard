@@ -1,12 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OLQ-0I-LO7">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="g27-Da-wMb">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Apple Maps Overlay View Controller-->
+        <!--Apple Maps Overlay-->
         <scene sceneID="Hvz-2R-5r0">
             <objects>
                 <viewController id="dJS-pp-0kt" customClass="AppleMapsOverlayViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
@@ -15,69 +19,37 @@
                         <viewControllerLayoutGuide type="bottom" id="GJ9-Ve-yKF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="0Jq-61-xQE">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cb2-Zc-pLG">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <items>
-                                    <navigationItem title="Apple Maps Overlay" id="iLg-fP-nXf">
-                                        <barButtonItem key="leftBarButtonItem" style="done" systemItem="cancel" id="Cxn-cp-6Z9">
-                                            <connections>
-                                                <segue destination="J7r-G0-3gB" kind="unwind" unwindAction="unwindToMenu:" id="gIf-2p-xmx"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="cb2-Zc-pLG" secondAttribute="trailing" id="IQN-cY-94M"/>
-                            <constraint firstItem="cb2-Zc-pLG" firstAttribute="leading" secondItem="0Jq-61-xQE" secondAttribute="leading" id="KDU-w6-FHh"/>
-                            <constraint firstItem="cb2-Zc-pLG" firstAttribute="top" secondItem="0Jq-61-xQE" secondAttribute="top" id="OSF-xi-Fet"/>
-                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="cki-7i-meo"/>
+                    <navigationItem key="navigationItem" title="Apple Maps Overlay" id="cki-7i-meo"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bMh-MP-xu1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="J7r-G0-3gB" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1067" y="-908"/>
+            <point key="canvasLocation" x="1180" y="-927.88605697151434"/>
         </scene>
-        <!--Example Table View Controller-->
+        <!--IndoorAtlas SDK Examples-->
         <scene sceneID="Hhz-dn-BVO">
             <objects>
                 <tableViewController id="OLQ-0I-LO7" customClass="ExampleTableViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="axl-OI-PY6">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" translucent="NO" id="jaw-4i-ycw">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <color key="barTintColor" red="0.070588235294117646" green="0.56862745098039214" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
-                            <textAttributes key="titleTextAttributes">
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                <offsetWrapper key="textShadowOffset" horizontal="0.0" vertical="0.0"/>
-                            </textAttributes>
-                            <items>
-                                <navigationItem title="IndoorAtlas SDK Examples" prompt=" " id="98c-6c-t5y"/>
-                            </items>
-                        </navigationBar>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExampleTableViewCell" rowHeight="100" id="7nh-OP-euy" customClass="ExampleTableViewCell" customModule="swift_examples" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="102" width="600" height="100"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7nh-OP-euy" id="DNt-ZR-80f">
-                                    <rect key="frame" x="0.0" y="0.0" width="567" height="99.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="99.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S8r-vI-snI">
-                                            <rect key="frame" x="8" y="39" width="551" height="21"/>
+                                            <rect key="frame" x="8" y="39" width="326" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -98,18 +70,39 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" title="IndoorAtlas SDK Examples" id="kb3-C2-UfZ"/>
                     <connections>
                         <segue destination="FGP-vm-cP2" kind="show" identifier="Console Print" id="Ffi-jb-vOr"/>
                         <segue destination="VQ0-BK-KM0" kind="show" identifier="Image View" id="88F-oO-G2e"/>
                         <segue destination="0YH-PY-FFb" kind="show" identifier="Apple Maps" id="gC1-vy-QZT"/>
                         <segue destination="dJS-pp-0kt" kind="show" identifier="Apple Maps Overlay" id="O5g-Ts-rcX"/>
+                        <segue destination="6xm-1k-Myd" kind="show" identifier="Indoor-Outdoor" id="A9U-cZ-hiy"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ynp-1J-uT6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="47" y="-311"/>
+            <point key="canvasLocation" x="384.80000000000001" y="-311.69415292353824"/>
         </scene>
-        <!--Apple Maps View Controller-->
+        <!--Indoor-Outdoor-->
+        <scene sceneID="j1D-5f-6rC">
+            <objects>
+                <viewController id="6xm-1k-Myd" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mHb-2r-tkk"/>
+                        <viewControllerLayoutGuide type="bottom" id="neR-pC-l2t"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8Fa-yc-1MY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Indoor-Outdoor" id="o7d-sL-8fA"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UyX-ez-dFs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-609" y="575"/>
+        </scene>
+        <!--Apple Maps-->
         <scene sceneID="OkN-v5-fMP">
             <objects>
                 <viewController id="0YH-PY-FFb" customClass="AppleMapsViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
@@ -118,36 +111,17 @@
                         <viewControllerLayoutGuide type="bottom" id="ZVk-m0-xok"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Plk-BN-7Gm">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jgg-iD-6Wi">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <items>
-                                    <navigationItem title="Apple Maps" id="MiX-gX-Yi8">
-                                        <barButtonItem key="leftBarButtonItem" style="done" systemItem="cancel" id="2XZ-hH-mLb">
-                                            <connections>
-                                                <segue destination="Si2-ue-NFX" kind="unwind" unwindAction="unwindToMenu:" id="LqO-vq-M8b"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="jgg-iD-6Wi" firstAttribute="leading" secondItem="Plk-BN-7Gm" secondAttribute="leading" id="G4B-Li-HPK"/>
-                            <constraint firstAttribute="trailing" secondItem="jgg-iD-6Wi" secondAttribute="trailing" id="gRo-ob-aLb"/>
-                            <constraint firstItem="jgg-iD-6Wi" firstAttribute="top" secondItem="Plk-BN-7Gm" secondAttribute="top" id="iB6-wr-hrG"/>
-                        </constraints>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Apple Maps" id="406-Pd-UpX"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CNT-jl-9Dr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="Si2-ue-NFX" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-179" y="669"/>
+            <point key="canvasLocation" x="111" y="575"/>
         </scene>
-        <!--Image View Controller-->
+        <!--Image View-->
         <scene sceneID="iiE-uq-9VF">
             <objects>
                 <viewController id="VQ0-BK-KM0" customClass="ImageViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
@@ -156,36 +130,17 @@
                         <viewControllerLayoutGuide type="bottom" id="19a-hT-ij8"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="E1U-a3-IlV">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3QM-lZ-0F4">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <items>
-                                    <navigationItem title="Image View" id="VEB-1l-RhZ">
-                                        <barButtonItem key="leftBarButtonItem" style="done" systemItem="cancel" id="Awy-La-r25">
-                                            <connections>
-                                                <segue destination="Uj1-wQ-e6p" kind="unwind" unwindAction="unwindToMenu:" id="3pG-Le-uTb"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="3QM-lZ-0F4" secondAttribute="trailing" id="FFv-yA-L2F"/>
-                            <constraint firstItem="3QM-lZ-0F4" firstAttribute="leading" secondItem="E1U-a3-IlV" secondAttribute="leading" id="MlY-he-fdp"/>
-                            <constraint firstItem="3QM-lZ-0F4" firstAttribute="top" secondItem="E1U-a3-IlV" secondAttribute="top" id="fDe-yY-vHJ"/>
-                        </constraints>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Image View" id="Uin-Gm-JXb"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dTK-cU-PXa" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="Uj1-wQ-e6p" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="590" y="621"/>
+            <point key="canvasLocation" x="818" y="576"/>
         </scene>
-        <!--Console View Controller-->
+        <!--Console Log-->
         <scene sceneID="tg3-qt-V74">
             <objects>
                 <viewController id="FGP-vm-cP2" customClass="ConsoleViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
@@ -194,34 +149,38 @@
                         <viewControllerLayoutGuide type="bottom" id="djZ-Hs-NNw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="yLW-RE-zf3">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wJA-Or-Ujd">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <items>
-                                    <navigationItem title="Console Prints" id="ujo-df-XnM">
-                                        <barButtonItem key="leftBarButtonItem" style="done" systemItem="cancel" id="lQ0-zD-wZA">
-                                            <connections>
-                                                <segue destination="NIH-Mf-f59" kind="unwind" unwindAction="unwindToMenu:" id="hxU-rY-7dj"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="wJA-Or-Ujd" firstAttribute="leading" secondItem="yLW-RE-zf3" secondAttribute="leading" id="51l-Wa-WbT"/>
-                            <constraint firstAttribute="trailing" secondItem="wJA-Or-Ujd" secondAttribute="trailing" id="h1d-zm-ENB"/>
-                            <constraint firstItem="wJA-Or-Ujd" firstAttribute="top" secondItem="yLW-RE-zf3" secondAttribute="top" id="sIw-ea-dIp"/>
-                        </constraints>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Console Log" id="jkF-WU-tcx"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="epn-Jl-jew" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="NIH-Mf-f59" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1097" y="-154"/>
+            <point key="canvasLocation" x="1180" y="-233.43328335832086"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Boy-Z0-qm7">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="g27-Da-wMb" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="3Wv-9g-Aet">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.070826970040000006" green="0.56784880159999995" blue="0.94985955950000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="OLQ-0I-LO7" kind="relationship" relationship="rootViewController" id="Zph-Sy-ZZV"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TWX-oE-32a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-546" y="-312"/>
         </scene>
     </scenes>
 </document>

@@ -90,11 +90,6 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         SVProgressHUD.show(withStatus: NSLocalizedString("Waiting for location data", comment: ""))
     }
     
-    // Hide status bar
-    override var prefersStatusBarHidden : Bool {
-        return true
-    }
-    
     // Function to change the map overlay
     func changeMapOverlay() {
         
@@ -196,11 +191,6 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     // Authenticate to IndoorAtlas services and request location updates
     func requestLocation() {
         
-        if !kFloorplanId.isEmpty {
-            let location = IALocation(floorPlanId: kFloorplanId)
-            locationManager.location = location
-        }
-        
         locationManager.delegate = self
         
         resourceManager = IAResourceManager(locationManager: locationManager)!
@@ -226,9 +216,7 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         label.textAlignment = NSTextAlignment.center
         label.numberOfLines = 0
         view.addSubview(label)
-        
-        UIApplication.shared.isStatusBarHidden = true
-        
+                
         requestLocation()
     }
     
@@ -242,8 +230,6 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         map.delegate = nil
         map.removeFromSuperview()
         label.removeFromSuperview()
-        
-        UIApplication.shared.isStatusBarHidden = false
         
         SVProgressHUD.dismiss()
     }
