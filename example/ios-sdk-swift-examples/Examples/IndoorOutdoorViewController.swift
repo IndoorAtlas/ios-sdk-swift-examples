@@ -1,4 +1,14 @@
 //
+//  IndoorOutdoorViewController.swift
+//  ios-sdk-swift-examples
+//
+//  Created by Käytttäjä on 31/10/2017.
+//  Copyright © 2017 IndoorAtlas. All rights reserved.
+//
+
+import UIKit
+
+//
 //  AppleMapsOverlayViewController.swift
 //
 //  IndoorAtlas iOS SDK Swift Examples
@@ -10,17 +20,19 @@ import MapKit
 import IndoorAtlas
 import SVProgressHUD
 
-// Function to convert degrees to radians
-func degreesToRadians(_ x:Double) -> Double {
-    return (Double.pi * x / 180.0)
-}
-
-// Blue dot annotation class
-class BlueDotAnnotation: MKPointAnnotation {
-    var radius: Double
+// Blue dot & accuracy circle annotation class
+class LocationAnnotation: MKPointAnnotation {
+    enum LocationType {
+        case blueDot
+        case accuracyCircle
+    }
     
-    required init(radius: Double) {
+    var radius: Double
+    var locationType: LocationType
+    
+    required init(locationType: LocationType, radius: Double) {
         self.radius = radius
+        self.locationType = locationType
         super.init()
     }
     
@@ -29,55 +41,8 @@ class BlueDotAnnotation: MKPointAnnotation {
     }
 }
 
-// Class for map overlay object
-class MapOverlay: NSObject, MKOverlay {
-    var coordinate: CLLocationCoordinate2D
-    var boundingMapRect: MKMapRect
-    
-    
-    // Initializer for the class
-    init(floorPlan: IAFloorPlan, andRotatedRect rotated: CGRect) {
-        coordinate = floorPlan.center
-        
-        // Area coordinates for the overlay
-        let topLeft = MKMapPointForCoordinate(floorPlan.topLeft)
-        boundingMapRect = MKMapRectMake(topLeft.x + Double(rotated.origin.x), topLeft.y + Double(rotated.origin.y), Double(rotated.size.width), Double(rotated.size.height))
-    }
-}
-
-// Class for rendering map overlay objects
-class MapOverlayRenderer: MKOverlayRenderer {
-    var overlayImage: UIImage
-    var floorPlan: IAFloorPlan
-    var rotated: CGRect
-    
-    init(overlay:MKOverlay, overlayImage:UIImage, fp: IAFloorPlan, rotated: CGRect) {
-        self.overlayImage = overlayImage
-        self.floorPlan = fp
-        self.rotated = rotated
-        super.init(overlay: overlay)
-    }
-    
-    override func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in ctx: CGContext) {
-        
-        // Width and height in MapPoints for the floorplan
-        let mapPointsPerMeter = MKMapPointsPerMeterAtLatitude(floorPlan.center.latitude)
-        let rect = CGRect(x: 0, y: 0, width: Double(floorPlan.widthMeters) * mapPointsPerMeter, height: Double(floorPlan.heightMeters) * mapPointsPerMeter)
-        ctx.translateBy(x: -rotated.origin.x, y: -rotated.origin.y)
-        
-        // Rotate around top left corner
-        ctx.rotate(by: CGFloat(degreesToRadians(floorPlan.bearing)));
-        
-        // Draw the floorplan image
-        UIGraphicsPushContext(ctx)
-        overlayImage.draw(in: rect, blendMode: CGBlendMode.normal, alpha: 1.0)
-        UIGraphicsPopContext();
-    }
-}
-
-
 // View controller for Apple Maps Overlay Example
-class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegate, MKMapViewDelegate {
+class IndoorOutdoorViewController: UIViewController, IALocationManagerDelegate, MKMapViewDelegate {
     
     var floorPlanFetch:IAFetchTask!
     var imageFetch:AnyObject!
@@ -87,7 +52,10 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     var map = MKMapView()
     var camera = MKMapCamera()
     var circle = MKCircle()
-    var currentCircle: BlueDotAnnotation? = nil
+    var currentCircle: LocationAnnotation? = nil
+    var currentAccuracyCircle: MKCircle? = nil
+    var currentLocation: CLLocation? = nil
+    var flooorPlanOverlay: MapOverlay? = nil
     var updateCamera = true
     
     var floorPlan = IAFloorPlan()
@@ -116,8 +84,9 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         let cgRect = CGRect(x: 0, y: 0, width: CGFloat(widthMapPoints), height: CGFloat(heightMapPoints))
         let a = degreesToRadians(self.floorPlan.bearing)
         rotated = cgRect.applying(CGAffineTransform(rotationAngle: CGFloat(a)));
-        let overlay = MapOverlay(floorPlan: floorPlan, andRotatedRect: rotated)
-        map.add(overlay)
+        flooorPlanOverlay = MapOverlay(floorPlan: floorPlan, andRotatedRect: rotated)
+        map.add(flooorPlanOverlay!)
+        updateCircles()
     }
     
     // Function for rendering overlay objects
@@ -125,18 +94,13 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         var circleRenderer:MKCircleRenderer!
         
         // If it is possible to convert overlay to MKCircle then render the circle with given properties. Else if the overlay is class of MapOverlay set up its own MapOverlayRenderer. Else render red circle.
-        if let overlay = overlay as? MKCircle {
-            circleRenderer = MKCircleRenderer(circle: overlay)
-            circleRenderer.fillColor = UIColor(red: 0.08627, green: 0.5059, blue: 0.9843, alpha:1.0)
-            return circleRenderer
-            
-        } else if overlay is MapOverlay {
+        if overlay is MapOverlay {
             let overlayView = MapOverlayRenderer(overlay: overlay, overlayImage: fpImage, fp: floorPlan, rotated: rotated)
             return overlayView
             
         } else {
             circleRenderer = MKCircleRenderer(overlay: overlay)
-            circleRenderer.fillColor = UIColor.init(red: 1, green: 0, blue: 0, alpha: 1.0)
+            circleRenderer.fillColor = UIColor.init(red: 0.08627, green: 0.5059, blue: 0.9843, alpha: 0.4)
             return circleRenderer
         }
     }
@@ -150,29 +114,22 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         if let newLocation = l.location?.coordinate {
             
             SVProgressHUD.dismiss()
+            currentLocation = l.location
             
-            // The accuracy of coordinate position depends on the placement of floor plan image.
-            let point = floorPlan.coordinate(toPoint: (l.location?.coordinate)!)
+            if currentAccuracyCircle != nil {
+                map.remove(currentAccuracyCircle!)
+            }
             
-            
-            guard let accuracy = l.location?.horizontalAccuracy else { return }
-            let conversion = floorPlan.meterToPixelConversion
-            
-            let size = CGFloat(accuracy * Double(conversion))
-            
-            var radiusPoints = (l.location?.horizontalAccuracy)! / MKMetersPerMapPointAtLatitude((l.location?.coordinate.latitude)!)
+            currentAccuracyCircle = MKCircle(center: newLocation, radius: (l.location?.horizontalAccuracy)!)
+            map.add(currentAccuracyCircle!)
             
             // Remove the previous circle overlay and set up a new overlay
             if currentCircle == nil {
-                currentCircle = BlueDotAnnotation(radius: 25)
+                currentCircle = LocationAnnotation(locationType: .blueDot, radius: 25)
                 map.addAnnotation(currentCircle!)
             }
             currentCircle?.coordinate = newLocation
             
-            //map.remove(circle as MKOverlay)
-            //circle = MKCircle(center: newLocation, radius: 1)
-            //map.add(circle)
- 
             if updateCamera {
                 // Ask Map Kit for a camera that looks at the location from an altitude of 300 meters above the eye coordinates.
                 camera = MKMapCamera(lookingAtCenter: (l.location?.coordinate)!, fromEyeCoordinate: (l.location?.coordinate)!, eyeAltitude: 300)
@@ -182,10 +139,25 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
                 updateCamera = false
             }
         }
-    
+        
         if let traceId = manager.extraInfo?[kIATraceId] as? NSString {
             label.text = "TraceID: \(traceId)"
         }
+    }
+    
+    func updateCircles() {
+        if currentAccuracyCircle != nil {
+            map.remove(currentAccuracyCircle!)
+        }
+        
+        if currentCircle == nil {
+            currentCircle = LocationAnnotation(locationType: .blueDot, radius: 25)
+            map.addAnnotation(currentCircle!)
+        }
+        
+        currentAccuracyCircle = MKCircle(center: (currentLocation?.coordinate)!, radius: (currentLocation?.horizontalAccuracy)!)
+        map.add(currentAccuracyCircle!)
+        currentCircle?.coordinate = (currentLocation?.coordinate)!
     }
     
     // Fetches image with the given IAFloorplan
@@ -201,28 +173,55 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
     }
     
     func indoorLocationManager(_ manager: IALocationManager, didEnter region: IARegion) {
+        
+        switch region.type {
+        case .iaRegionTypeVenue:
+            map.showsUserLocation = false
+            showToast(text: "Enter region \(region.identifier)")
 
-        guard region.type == ia_region_type.iaRegionTypeFloorPlan else { return }
-        
-        updateCamera = true
-        
-        if (floorPlanFetch != nil) {
-            floorPlanFetch.cancel()
-            floorPlanFetch = nil
-        }
-        
-        // Fetches the floorplan for the given region identifier
-        floorPlanFetch = self.resourceManager.fetchFloorPlan(withId: region.identifier, andCompletion: { (floorplan, error) in
+        case .iaRegionTypeFloorPlan:
             
-            if (error == nil) {
-                self.floorPlan = floorplan!
-                self.fetchImage(floorplan!)
-            } else {
-                print("There was an error during floorplan fetch: ", error as Any)
+            updateCamera = true
+            
+            if (floorPlanFetch != nil) {
+                floorPlanFetch.cancel()
+                floorPlanFetch = nil
             }
-        })
+            
+            // Fetches the floorplan for the given region identifier
+            floorPlanFetch = self.resourceManager.fetchFloorPlan(withId: region.identifier, andCompletion: { (floorplan, error) in
+                
+                if (error == nil) {
+                    self.floorPlan = floorplan!
+                    self.fetchImage(floorplan!)
+                } else {
+                    print("There was an error during floorplan fetch: ", error as Any)
+                }
+            })
+        default:
+            return
+        }
     }
     
+    func indoorLocationManager(_ manager: IALocationManager, didExitRegion region: IARegion) {
+        switch region.type {
+        case .iaRegionTypeVenue:
+            showToast(text: "Exit Venue \(region.identifier)")
+            map.showsUserLocation = true
+            if currentCircle != nil {
+                map.removeAnnotation(currentCircle!)
+            }
+            if currentAccuracyCircle != nil {
+                map.remove(currentAccuracyCircle!)
+            }
+        case .iaRegionTypeFloorPlan:
+            if flooorPlanOverlay != nil {
+                map.remove(flooorPlanOverlay!)
+            }
+        default:
+            return
+        }
+    }
     // Authenticate to IndoorAtlas services and request location updates
     func requestLocation() {
         
@@ -250,7 +249,10 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
         view.addSubview(label)
-                
+        
+        
+        map.showsUserLocation = true
+        
         requestLocation()
     }
     
@@ -268,14 +270,42 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         SVProgressHUD.dismiss()
     }
     
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        if currentCircle != nil {
+            map.removeAnnotation(currentCircle!)
+        }
+        if currentAccuracyCircle != nil {
+            map.remove(currentAccuracyCircle!)
+        }
+        
+        let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+        let location = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
+        let region = MKCoordinateRegion(center: location, span: span)
+        
+        map.setRegion(region, animated: true)
+    }
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if let annotation = annotation as? BlueDotAnnotation {
-            let type = "blueDot"
+        if let annotation = annotation as? LocationAnnotation {
+            var type = ""
             let color = UIColor(red: 0, green: 125/255, blue: 1, alpha: 1)
-            let alpha: CGFloat = 1.0
+            var alpha: CGFloat = 1.0
             
-            let borderWidth:CGFloat = 3
-            let borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+            var borderWidth:CGFloat = 0
+            var borderColor = UIColor(red: 0, green: 30/255, blue: 80/255, alpha: 1)
+            
+            switch annotation.locationType {
+            case LocationAnnotation.LocationType.blueDot:
+                type = "blueDot"
+                borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+                borderWidth = 3
+            case LocationAnnotation.LocationType.accuracyCircle:
+                type = "accuracyCircle"
+                alpha = 0.2
+                borderWidth = 0 // 1
+            default:
+                break
+            }
             
             let annotationView: MKAnnotationView = map.dequeueReusableAnnotationView(withIdentifier: type) ?? MKAnnotationView.init(annotation: annotation, reuseIdentifier: type)
             
@@ -295,5 +325,34 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
             
         }
         return nil
+    }
+    
+    func showToast(text:String) {
+        let toastLabel =
+            UILabel(frame:
+                CGRect(x: view.frame.size.width/2 - 150,
+                       y: view.frame.size.height/2 - 40,
+                       width: 300,
+                       height: 35))
+        toastLabel.backgroundColor = UIColor.black
+        view.addSubview(toastLabel)
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds = true
+        
+        let textLabel = UILabel(frame: CGRect(x: toastLabel.frame.origin.x + 10, y: toastLabel.frame.origin.y - 2, width: toastLabel.frame.size.width - 20, height: toastLabel.frame.size.height))
+        textLabel.text = text
+        textLabel.textColor = UIColor.white
+        textLabel.textAlignment = NSTextAlignment.center
+        textLabel.adjustsFontSizeToFitWidth = true
+        textLabel.clipsToBounds = true
+        
+        view.addSubview(textLabel)
+        UIView.animate(withDuration: 5.0, animations: {
+            toastLabel.alpha = 0.0
+        }, completion:{ (finished) in
+            toastLabel.removeFromSuperview()
+            textLabel.removeFromSuperview()
+        } )
     }
 }
