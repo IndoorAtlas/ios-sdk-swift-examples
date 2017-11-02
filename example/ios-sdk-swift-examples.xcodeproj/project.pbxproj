@@ -14,6 +14,7 @@
 		BC4017B91CBCF00D007332F4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC4017B71CBCF00D007332F4 /* LaunchScreen.storyboard */; };
 		BC6BC64C1CC4AC6E00D49D4F /* ExampleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6BC64B1CC4AC6E00D49D4F /* ExampleTableViewCell.swift */; };
 		BC6BC64E1CC4B0C100D49D4F /* ExampleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6BC64D1CC4B0C100D49D4F /* ExampleTableViewController.swift */; };
+		BC6EACBA1FA86FFD001A5B11 /* IndoorOutdoorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EACB91FA86FFD001A5B11 /* IndoorOutdoorViewController.swift */; };
 		BC98A9C81CBCF10F0096B50C /* AppleMapsOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98A9C71CBCF10F0096B50C /* AppleMapsOverlayViewController.swift */; };
 		BC98A9CA1CBCF1210096B50C /* AppleMapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98A9C91CBCF1210096B50C /* AppleMapsViewController.swift */; };
 		BC98A9CC1CBCF12F0096B50C /* ConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98A9CB1CBCF12F0096B50C /* ConsoleViewController.swift */; };
@@ -33,6 +34,7 @@
 		BC4017BA1CBCF00D007332F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC6BC64B1CC4AC6E00D49D4F /* ExampleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTableViewCell.swift; sourceTree = "<group>"; };
 		BC6BC64D1CC4B0C100D49D4F /* ExampleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTableViewController.swift; sourceTree = "<group>"; };
+		BC6EACB91FA86FFD001A5B11 /* IndoorOutdoorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IndoorOutdoorViewController.swift; path = Examples/IndoorOutdoorViewController.swift; sourceTree = "<group>"; };
 		BC98A9C71CBCF10F0096B50C /* AppleMapsOverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleMapsOverlayViewController.swift; path = Examples/AppleMapsOverlayViewController.swift; sourceTree = "<group>"; };
 		BC98A9C91CBCF1210096B50C /* AppleMapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleMapsViewController.swift; path = Examples/AppleMapsViewController.swift; sourceTree = "<group>"; };
 		BC98A9CB1CBCF12F0096B50C /* ConsoleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConsoleViewController.swift; path = Examples/ConsoleViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				BC98A9C71CBCF10F0096B50C /* AppleMapsOverlayViewController.swift */,
+				BC6EACB91FA86FFD001A5B11 /* IndoorOutdoorViewController.swift */,
 				BC98A9C91CBCF1210096B50C /* AppleMapsViewController.swift */,
 				BC98A9CB1CBCF12F0096B50C /* ConsoleViewController.swift */,
 				BC98A9CD1CBCF13D0096B50C /* ImageViewController.swift */,
@@ -149,7 +152,6 @@
 				TargetAttributes = {
 					BC4017AA1CBCF00D007332F4 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = EP466SRVXU;
 						LastSwiftMigration = 0820;
 					};
 				};
@@ -239,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC98A9D01CBCF20B0096B50C /* ApiKeys.swift in Sources */,
+				BC6EACBA1FA86FFD001A5B11 /* IndoorOutdoorViewController.swift in Sources */,
 				BC4017AF1CBCF00D007332F4 /* AppDelegate.swift in Sources */,
 				BC98A9CA1CBCF1210096B50C /* AppleMapsViewController.swift in Sources */,
 				BC6BC64C1CC4AC6E00D49D4F /* ExampleTableViewCell.swift in Sources */,
@@ -368,6 +371,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "ios-sdk-swift-examples/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -385,6 +389,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "ios-sdk-swift-examples/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

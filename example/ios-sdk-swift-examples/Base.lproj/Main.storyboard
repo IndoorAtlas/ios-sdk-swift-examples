@@ -86,7 +86,7 @@
         <!--Indoor-Outdoor-->
         <scene sceneID="j1D-5f-6rC">
             <objects>
-                <viewController id="6xm-1k-Myd" sceneMemberID="viewController">
+                <viewController id="6xm-1k-Myd" customClass="IndoorOutdoorViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mHb-2r-tkk"/>
                         <viewControllerLayoutGuide type="bottom" id="neR-pC-l2t"/>

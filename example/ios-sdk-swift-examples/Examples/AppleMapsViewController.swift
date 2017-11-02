@@ -14,9 +14,8 @@ import SVProgressHUD
 class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMapViewDelegate {
     
     var map = MKMapView()
-    var camera = MKMapCamera()
-    var circle = MKCircle()
-    
+    var camera: MKMapCamera? = nil
+    var circle: MKCircle? = nil    
     var label = UILabel()
     
     // Manager for IALocationManager
@@ -40,20 +39,25 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
             
             SVProgressHUD.dismiss()
             
-            // Remove all previous overlays from the map and add new
-            map.removeOverlays(map.overlays)
-            circle = MKCircle(center: newLocation, radius: 2)
-            map.add(circle)
+            // Remove previous circle from the map and add new
+            if (circle != nil) {
+                map.remove(circle!)
+            }
+            circle = MKCircle(center: newLocation, radius: 1)
+            map.add(circle!)
             
-            // Ask Map Kit for a camera that looks at the location from an altitude of 300 meters above the eye coordinates.
-            camera = MKMapCamera(lookingAtCenter: (l.location?.coordinate)!, fromEyeCoordinate: (l.location?.coordinate)!, eyeAltitude: 300)
-            
-            // Assign the camera to your map view.
-            map.camera = camera;
+            if (camera == nil) {
+
+                // Ask Map Kit for a camera that looks at the location from an altitude of 300 meters above the eye coordinates.
+                camera = MKMapCamera(lookingAtCenter: (l.location?.coordinate)!, fromEyeCoordinate: (l.location?.coordinate)!, eyeAltitude: 300)
+                
+                // Assign the camera to your map view.
+                map.camera = camera!;
+            }
         }
         
         if let traceId = manager.extraInfo?[kIATraceId] as? NSString {
-            label.text = "Trace ID: \(traceId)"
+            label.text = "TraceID: \(traceId)"
         }
     }
     
@@ -67,7 +71,7 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
             
             // Set up circleRenderer for rending the circle
             circleRenderer = MKCircleRenderer(circle: overlay)
-            circleRenderer.fillColor = UIColor(colorLiteralRed: 0, green: 0.647, blue: 0.961, alpha: 1.0)
+            circleRenderer.fillColor = UIColor(red: 0.08627, green: 0.5059, blue: 0.9843, alpha:1.0)
         }
         
         return circleRenderer
@@ -78,12 +82,6 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
         
         // Point delegate to receiver
         manager.delegate = self
-        
-        // Optionally initial location
-        if !kFloorplanId.isEmpty {
-            let location = IALocation(floorPlanId: kFloorplanId)
-            manager.location = location
-        }
         
         // Request location updates
         manager.startUpdatingLocation()
@@ -98,11 +96,9 @@ class AppleMapsViewController: UIViewController, IALocationManagerDelegate, MKMa
         view.sendSubview(toBack: map)
         map.delegate = self
         
-        var frame = view.bounds
-        frame.origin.y = 64
-        frame.size.height = 42
-        label.frame = frame
+        label.frame = CGRect(x: 8, y: 14, width: view.bounds.width - 16, height: 42)
         label.textAlignment = NSTextAlignment.center
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
         view.addSubview(label)
         

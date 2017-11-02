@@ -53,6 +53,9 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         self.view.bringSubview(toFront: self.accuracyCircle)
         self.view.bringSubview(toFront: self.circle)
         
+        circle.isHidden = false
+        accuracyCircle.isHidden = false
+        
         // Animate circle with duration 0 or 0.35 depending if the circle is hidden or not
         UIView.animate(withDuration: self.circle.isHidden ? 0 : 0.35, animations: {
             self.accuracyCircle.center = point
@@ -60,9 +63,6 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
             self.accuracyCircle.transform = CGAffineTransform(scaleX: CGFloat(size), y: CGFloat(size))
 
         })
-
-        circle.isHidden = false
-        accuracyCircle.isHidden = false
         
         if let traceId = manager.extraInfo?[kIATraceId] as? NSString {
             label.text = "TraceID: \n\(traceId)"
@@ -155,7 +155,7 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         imageView.addSubview(self.accuracyCircle)
         imageView.addSubview(circle)
 
-        label.frame = CGRect(x: 8, y: 24, width: view.bounds.width - 16, height: 34)
+        label.frame = CGRect(x: 8, y: 14, width: view.bounds.width - 16, height: 34)
         label.textAlignment = NSTextAlignment.center
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
