@@ -48,6 +48,7 @@ These examples are included in the app:
 * Apple Maps Overlay: Shows the location together with the associated floor plan bitmap overlay on the world map.
 * Image View: Floor plan bitmap image view with the blue dot location.
 * Console Prints: Shows console printout provided by the SDK.
+* Indoor-Outdoor: Example of transitions from unmapped (outdoor) spaces to mapped (indoor) spaces.
 
 ## Documentation
 
