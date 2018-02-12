@@ -1,12 +1,12 @@
-# Uncomment this line to define a global platform for your project
-# platform :ios, '8.0'
-# Uncomment this line if you're using Swift
 use_frameworks!
+
+source 'https://github.com/CocoaPods/Specs.git'
+source 'git@github.com:IndoorAtlas/CocoaPods-Specs.git'
 
 target 'ios-sdk-swift-examples' do
 
-pod 'IndoorAtlas', '~> 2.6.0'
-pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
+  pod 'IndoorAtlas', '2.7.0-beta'
+  pod 'IndoorAtlasWayfinding', '2.7.0-beta'
+  pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 
 end
-

@@ -27,7 +27,7 @@ class ExampleTableViewController: UITableViewController {
     
     // Loads the example titles which are same as segue IDs
     func loadData() {
-        examplesList = ["Console Print", "Image View", "Apple Maps", "Apple Maps Overlay", "Indoor-Outdoor"]
+        examplesList = ["Console Print", "Image View", "Apple Maps", "Apple Maps Overlay", "Indoor-Outdoor", "Wayfinding"]
     }
     
     // Sets up the SVProgressHUD with a bit slower animation
