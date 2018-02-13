@@ -1,18 +1,8 @@
 //
-//  IndoorOutdoorViewController.swift
-//  ios-sdk-swift-examples
-//
-//  Created by Käytttäjä on 31/10/2017.
-//  Copyright © 2017 IndoorAtlas. All rights reserved.
-//
-
-import UIKit
-
-//
 //  AppleMapsOverlayViewController.swift
 //
 //  IndoorAtlas iOS SDK Swift Examples
-//  Apple Maps Overlay Example
+//  Apple Maps Indoor-Outdoor Example
 //
 
 import UIKit

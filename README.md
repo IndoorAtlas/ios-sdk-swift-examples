@@ -49,6 +49,7 @@ These examples are included in the app:
 * Image View: Floor plan bitmap image view with the blue dot location.
 * Console Prints: Shows console printout provided by the SDK.
 * Indoor-Outdoor: Example of transitions from unmapped (outdoor) spaces to mapped (indoor) spaces.
+* Wayfinding: Example of how to use IndoorAtlas Wayfinding framework
 
 ## Documentation
 
