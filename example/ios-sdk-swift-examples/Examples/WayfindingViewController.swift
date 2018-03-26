@@ -117,6 +117,10 @@ class WayfindingViewController: UIViewController, IALocationManagerDelegate, MKM
                 wayfinder.setLocationWithLatitude(newLocation.latitude, longitude: newLocation.longitude, floor: Int32(floorLevel))
             }
 
+            if let route = wayfinder.getRoute() {
+                plotRoute(route: route)
+            }
+
             // The accuracy of coordinate position depends on the placement of floor plan image.
             let point = floorPlan.coordinate(toPoint: (l.location?.coordinate)!)
 
@@ -282,8 +286,7 @@ class WayfindingViewController: UIViewController, IALocationManagerDelegate, MKM
         coord.longitude = leg.begin.longitude
 
         coordinateArray.append(coord)
-        print(route.count)
-        print(coordinateArray.count)
+
         for i in 0..<route.count {
             leg = route[i]
             coord.latitude = leg.end.latitude
