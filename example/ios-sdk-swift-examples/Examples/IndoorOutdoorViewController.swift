@@ -34,7 +34,6 @@ class LocationAnnotation: MKPointAnnotation {
 // View controller for Apple Maps Overlay Example
 class IndoorOutdoorViewController: UIViewController, IALocationManagerDelegate, MKMapViewDelegate {
     
-    var floorPlanFetch:IAFetchTask!
     var imageFetch:AnyObject!
     
     var fpImage = UIImage()
@@ -173,21 +172,10 @@ class IndoorOutdoorViewController: UIViewController, IALocationManagerDelegate, 
             
             updateCamera = true
             
-            if (floorPlanFetch != nil) {
-                floorPlanFetch.cancel()
-                floorPlanFetch = nil
+            if (region.floorplan != nil) {
+                self.floorPlan = region.floorplan!
+                self.fetchImage(region.floorplan!)
             }
-            
-            // Fetches the floorplan for the given region identifier
-            floorPlanFetch = self.resourceManager.fetchFloorPlan(withId: region.identifier, andCompletion: { (floorplan, error) in
-                
-                if (error == nil) {
-                    self.floorPlan = floorplan!
-                    self.fetchImage(floorplan!)
-                } else {
-                    print("There was an error during floorplan fetch: ", error as Any)
-                }
-            })
         default:
             return
         }

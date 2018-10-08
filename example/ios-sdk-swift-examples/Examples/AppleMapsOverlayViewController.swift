@@ -79,7 +79,6 @@ class MapOverlayRenderer: MKOverlayRenderer {
 // View controller for Apple Maps Overlay Example
 class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegate, MKMapViewDelegate {
     
-    var floorPlanFetch:IAFetchTask!
     var imageFetch:AnyObject!
     
     var fpImage = UIImage()
@@ -206,21 +205,10 @@ class AppleMapsOverlayViewController: UIViewController, IALocationManagerDelegat
         
         updateCamera = true
         
-        if (floorPlanFetch != nil) {
-            floorPlanFetch.cancel()
-            floorPlanFetch = nil
+        if (region.floorplan != nil) {
+            self.floorPlan = region.floorplan!
+            self.fetchImage(region.floorplan!)
         }
-        
-        // Fetches the floorplan for the given region identifier
-        floorPlanFetch = self.resourceManager.fetchFloorPlan(withId: region.identifier, andCompletion: { (floorplan, error) in
-            
-            if (error == nil) {
-                self.floorPlan = floorplan!
-                self.fetchImage(floorplan!)
-            } else {
-                print("There was an error during floorplan fetch: ", error as Any)
-            }
-        })
     }
     
     // Authenticate to IndoorAtlas services and request location updates

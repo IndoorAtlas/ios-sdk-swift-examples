@@ -9,13 +9,11 @@
 import UIKit
 import MapKit
 import IndoorAtlas
-import IndoorAtlasWayfinding
 import SVProgressHUD
 
 // View controller for Apple Maps Overlay Example
 class WayfindingViewController: UIViewController, IALocationManagerDelegate, MKMapViewDelegate, UIGestureRecognizerDelegate {
 
-    var floorPlanFetch:IAFetchTask!
     var imageFetch:AnyObject!
 
     var fpImage = UIImage()
@@ -26,30 +24,18 @@ class WayfindingViewController: UIViewController, IALocationManagerDelegate, MKM
     var currentCircle: BlueDotAnnotation? = nil
     var updateCamera = true
 
-    var floorPlan = IAFloorPlan()
+    var floorPlan: IAFloorPlan?
     var locationManager = IALocationManager.sharedInstance()
     var resourceManager = IAResourceManager()
 
     var rotated = CGRect()
     var label = UILabel()
 
-    var wayfinder = IAWayfinding()
     var routeLine: MKPolyline? = nil
     var lineView: MKPolylineRenderer? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Load graph
-        let filePath = Bundle.main.path(forResource: "wayfinding-graph", ofType: "json")
-
-        do {
-            let graphString = try String(contentsOfFile: filePath!, encoding: String.Encoding.utf8)
-            wayfinder = IAWayfinding.init(graph: graphString)
-
-        } catch {
-            print("Error reading file")
-        }
 
         let pressRecognizer = UILongPressGestureRecognizer.init(target: self, action: #selector(handleLongPress(pressGesture:)))
         pressRecognizer.delegate = self
@@ -63,14 +49,14 @@ class WayfindingViewController: UIViewController, IALocationManagerDelegate, MKM
     func changeMapOverlay() {
 
         //Width and height in MapPoints for the floorplan
-        let mapPointsPerMeter = MKMapPointsPerMeterAtLatitude(floorPlan.center.latitude)
-        let widthMapPoints = floorPlan.widthMeters * Float(mapPointsPerMeter)
-        let heightMapPoints = floorPlan.heightMeters * Float(mapPointsPerMeter)
+        let mapPointsPerMeter = MKMapPointsPerMeterAtLatitude(floorPlan!.center.latitude)
+        let widthMapPoints = floorPlan!.widthMeters * Float(mapPointsPerMeter)
+        let heightMapPoints = floorPlan!.heightMeters * Float(mapPointsPerMeter)
 
         let cgRect = CGRect(x: 0, y: 0, width: CGFloat(widthMapPoints), height: CGFloat(heightMapPoints))
-        let a = degreesToRadians(self.floorPlan.bearing)
+        let a = degreesToRadians(self.floorPlan!.bearing)
         rotated = cgRect.applying(CGAffineTransform(rotationAngle: CGFloat(a)));
-        let overlay = MapOverlay(floorPlan: floorPlan, andRotatedRect: rotated)
+        let overlay = MapOverlay(floorPlan: floorPlan!, andRotatedRect: rotated)
         map.add(overlay)
     }
 
@@ -93,7 +79,7 @@ class WayfindingViewController: UIViewController, IALocationManagerDelegate, MKM
             return circleRenderer
 
         } else if overlay is MapOverlay {
-            let overlayView = MapOverlayRenderer(overlay: overlay, overlayImage: fpImage, fp: floorPlan, rotated: rotated)
+            let overlayView = MapOverlayRenderer(overlay: overlay, overlayImage: fpImage, fp: floorPlan!, rotated: rotated)
             return overlayView
 
         } else {
@@ -112,24 +98,6 @@ class WayfindingViewController: UIViewController, IALocationManagerDelegate, MKM
         if let newLocation = l.location?.coordinate {
 
             SVProgressHUD.dismiss()
-
-            if let floorLevel = l.floor?.level {
-                wayfinder.setLocationWithLatitude(newLocation.latitude, longitude: newLocation.longitude, floor: Int32(floorLevel))
-            }
-
-            if let route = wayfinder.getRoute() {
-                plotRoute(route: route)
-            }
-
-            // The accuracy of coordinate position depends on the placement of floor plan image.
-            let point = floorPlan.coordinate(toPoint: (l.location?.coordinate)!)
-
-            guard let accuracy = l.location?.horizontalAccuracy else { return }
-            let conversion = floorPlan.meterToPixelConversion
-
-            let size = CGFloat(accuracy * Double(conversion))
-
-            var radiusPoints = (l.location?.horizontalAccuracy)! / MKMetersPerMapPointAtLatitude((l.location?.coordinate.latitude)!)
 
             // Remove the previous circle overlay and set up a new overlay
             if currentCircle == nil {
@@ -164,6 +132,10 @@ class WayfindingViewController: UIViewController, IALocationManagerDelegate, MKM
             }
         })
     }
+    
+    func indoorLocationManager(_ manager: IALocationManager, didUpdate route: IARoute) {
+        self.plotRoute(route: route);
+    }
 
     func indoorLocationManager(_ manager: IALocationManager, didEnter region: IARegion) {
 
@@ -171,21 +143,10 @@ class WayfindingViewController: UIViewController, IALocationManagerDelegate, MKM
 
         updateCamera = true
 
-        if (floorPlanFetch != nil) {
-            floorPlanFetch.cancel()
-            floorPlanFetch = nil
+        if (region.floorplan != nil) {
+            self.floorPlan = region.floorplan!
+            self.fetchImage(region.floorplan!)
         }
-
-        // Fetches the floorplan for the given region identifier
-        floorPlanFetch = self.resourceManager.fetchFloorPlan(withId: region.identifier, andCompletion: { (floorplan, error) in
-
-            if (error == nil) {
-                self.floorPlan = floorplan!
-                self.fetchImage(floorplan!)
-            } else {
-                print("There was an error during floorplan fetch: ", error as Any)
-            }
-        })
     }
 
     // Authenticate to IndoorAtlas services and request location updates
@@ -267,30 +228,31 @@ class WayfindingViewController: UIViewController, IALocationManagerDelegate, MKM
 
         let touchPoint = pressGesture.location(in: map)
         let coord = map.convert(touchPoint, toCoordinateFrom: map)
-
-        wayfinder.setDestinationWithLatitude(coord.latitude, longitude: coord.longitude, floor: 1)
-
-        if let route = wayfinder.getRoute() {
-            plotRoute(route: route)
+        
+        var req = IAWayfindingRequest();
+        req.coordinate = coord;
+        if (self.floorPlan != nil && self.floorPlan!.floor != nil) {
+            req.floor = self.floorPlan!.floor!.level;
+            self.locationManager.startMonitoring(forWayfinding: req)
         }
     }
 
-    func plotRoute(route:[IARoutingLeg]) {
-        if route.count == 0 { return }
+    func plotRoute(route:IARoute) {
+        if route.legs.count == 0 { return }
 
         var coordinateArray = [CLLocationCoordinate2D]()
         var coord = CLLocationCoordinate2D()
-        var leg = route[0]
+        var leg = route.legs[0]
 
-        coord.latitude = leg.begin.latitude
-        coord.longitude = leg.begin.longitude
+        coord.latitude = leg.begin.coordinate.latitude;
+        coord.longitude = leg.begin.coordinate.longitude
 
         coordinateArray.append(coord)
 
-        for i in 0..<route.count {
-            leg = route[i]
-            coord.latitude = leg.end.latitude
-            coord.longitude = leg.end.longitude
+        for i in 0..<route.legs.count {
+            leg = route.legs[i]
+            coord.latitude = leg.end.coordinate.latitude
+            coord.longitude = leg.end.coordinate.longitude
             coordinateArray.append(coord)
         }
 
@@ -298,7 +260,7 @@ class WayfindingViewController: UIViewController, IALocationManagerDelegate, MKM
             map.remove(routeLine!)
         }
 
-        routeLine = MKPolyline.init(coordinates: coordinateArray, count: route.count + 1)
+        routeLine = MKPolyline.init(coordinates: coordinateArray, count: route.legs.count + 1)
         map.add(routeLine!)
     }
 }
