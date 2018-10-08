@@ -5,8 +5,8 @@ source 'git@github.com:IndoorAtlas/CocoaPods-Specs.git'
 
 target 'ios-sdk-swift-examples' do
 
-  pod 'IndoorAtlas', '2.7.0-beta'
-  pod 'IndoorAtlasWayfinding', '2.7.0-beta'
+  pod 'IndoorAtlas', '2.8.4'
+  pod 'IndoorAtlasWayfinding', '2.8.0'
   pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 
 end
