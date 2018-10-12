@@ -17,9 +17,6 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
     var circle = UIView()
     var accuracyCircle = UIView()
     var manager = IALocationManager.sharedInstance()
-    var resourceManager = IAResourceManager()
-    
-    var imageFetch:AnyObject!
     
     var label = UILabel()
     
@@ -75,21 +72,22 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         
         // Fetches floorplan with the given region identifier
         if (region.floorplan != nil) {
+            self.floorPlan = region.floorplan!
             fetchFloorplanImage(region.floorplan!)
         }
     }
     
     // Function to fetch floorplan with an ID
     func fetchFloorplanImage(_ floorplan:IAFloorPlan) {
-
-        self.imageFetch = self.resourceManager.fetchFloorPlanImage(with: (floorplan.imageUrl)!, andCompletion: { (data, error) in
-            if (error != nil) {
-                print(error as Any)
-            } else {
-                        
-                // Initialize the image with the data from the server
-                let image = UIImage.init(data: data!)
-                        
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            let imageData = try? Data(contentsOf: floorplan.imageUrl!)
+            if (imageData == nil) {
+                NSLog("Error fetching floor plan image")
+            }
+            // Bounce back to the main thread to update the UI
+            DispatchQueue.main.async {
+                let image = UIImage.init(data: imageData!)!
                 // Scale the image and do CGAffineTransform
                 let scale = fmin(1.0, fmin(self.view.bounds.size.width / CGFloat((floorplan.width)), self.view.bounds.size.height / CGFloat((floorplan.height))))
                 let t:CGAffineTransform = CGAffineTransform(scaleX: scale, y: scale)
@@ -98,15 +96,14 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
                 self.imageView.frame = CGRect(x: 0, y: 0, width: CGFloat((floorplan.width)), height: CGFloat((floorplan.height)))
                 self.imageView.transform = t
                 self.imageView.center = self.view.center
-                        
+                
                 self.imageView.backgroundColor = UIColor.white
-                        
+                
                 // Scale the blue dot as well
                 let size = CGFloat((floorplan.meterToPixelConversion))
                 self.circle.transform = CGAffineTransform(scaleX: size, y: size)
             }
-        })
-        self.floorPlan = floorplan
+        }
     }
     
     // Authenticate to IndoorAtlas Services and request location updates
@@ -115,8 +112,7 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         // Point delegate to receiver
         manager.delegate = self
         
-        // Initialize ResourceManager
-        resourceManager = IAResourceManager(locationManager: manager)!
+        manager.lockIndoors(true)
         
         // Request location updates
         manager.startUpdatingLocation()
