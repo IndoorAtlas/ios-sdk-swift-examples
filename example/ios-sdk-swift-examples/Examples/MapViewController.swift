@@ -1,8 +1,9 @@
 //
-//  AppleMapsOverlayViewController.swift
+//  MapViewController.swift
+//  ios-sdk-swift-examples
 //
 //  IndoorAtlas iOS SDK Swift Examples
-//  Apple Maps Indoor-Outdoor Example
+//  IndoorAtlas Map View Example
 //
 
 import UIKit
@@ -31,81 +32,148 @@ class LocationAnnotation: MKPointAnnotation {
     }
 }
 
+// Function to convert degrees to radians
+func degreesToRadians(_ x:Double) -> Double {
+    return (Double.pi * x / 180.0)
+}
+
+// Class for map overlay object
+class MapOverlay: NSObject, MKOverlay {
+    var coordinate: CLLocationCoordinate2D
+    var boundingMapRect: MKMapRect
+    
+    
+    // Initializer for the class
+    init(floorPlan: IAFloorPlan, andRotatedRect rotated: CGRect) {
+        coordinate = floorPlan.center
+        
+        // Area coordinates for the overlay
+        let topLeft = MKMapPointForCoordinate(floorPlan.topLeft)
+        boundingMapRect = MKMapRectMake(topLeft.x + Double(rotated.origin.x), topLeft.y + Double(rotated.origin.y), Double(rotated.size.width), Double(rotated.size.height))
+    }
+}
+
+// Class for rendering map overlay objects
+class MapOverlayRenderer: MKOverlayRenderer {
+    var overlayImage: UIImage
+    var floorPlan: IAFloorPlan
+    var rotated: CGRect
+    
+    init(overlay:MKOverlay, overlayImage:UIImage, fp: IAFloorPlan, rotated: CGRect) {
+        self.overlayImage = overlayImage
+        self.floorPlan = fp
+        self.rotated = rotated
+        super.init(overlay: overlay)
+    }
+    
+    override func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in ctx: CGContext) {
+        
+        // Width and height in MapPoints for the floorplan
+        let mapPointsPerMeter = MKMapPointsPerMeterAtLatitude(floorPlan.center.latitude)
+        let rect = CGRect(x: 0, y: 0, width: Double(floorPlan.widthMeters) * mapPointsPerMeter, height: Double(floorPlan.heightMeters) * mapPointsPerMeter)
+        ctx.translateBy(x: -rotated.origin.x, y: -rotated.origin.y)
+        
+        // Rotate around top left corner
+        ctx.rotate(by: CGFloat(degreesToRadians(floorPlan.bearing)));
+        
+        // Draw the floorplan image
+        UIGraphicsPushContext(ctx)
+        overlayImage.draw(in: rect, blendMode: CGBlendMode.normal, alpha: 1.0)
+        UIGraphicsPopContext();
+    }
+}
+
 // View controller for Apple Maps Overlay Example
-class IndoorOutdoorViewController: UIViewController, IALocationManagerDelegate, MKMapViewDelegate {
-    
-    var floorPlanFetch:IAFetchTask!
-    var imageFetch:AnyObject!
-    
+class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewDelegate, UIGestureRecognizerDelegate {
+
     var fpImage = UIImage()
-    
+
     var map = MKMapView()
     var camera = MKMapCamera()
     var circle = MKCircle()
     var currentCircle: LocationAnnotation? = nil
     var currentAccuracyCircle: MKCircle? = nil
     var currentLocation: CLLocation? = nil
-    var flooorPlanOverlay: MapOverlay? = nil
+    var floorPlanOverlay: MapOverlay? = nil
+
     var updateCamera = true
-    
-    var floorPlan = IAFloorPlan()
+
+    var floorPlan: IAFloorPlan?
     var locationManager = IALocationManager.sharedInstance()
-    var resourceManager = IAResourceManager()
-    
+
     var rotated = CGRect()
-    
     var label = UILabel()
-    
+
+    var routeLine: MKPolyline? = nil
+    var lineView: MKPolylineRenderer? = nil
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        let pressRecognizer = UILongPressGestureRecognizer.init(target: self, action: #selector(handleLongPress(pressGesture:)))
+        pressRecognizer.delegate = self
+        self.view.addGestureRecognizer(pressRecognizer)
+
         // Show spinner while waiting for location information from IALocationManager
         SVProgressHUD.show(withStatus: NSLocalizedString("Waiting for location data", comment: ""))
     }
-    
+
     // Function to change the map overlay
     func changeMapOverlay() {
-        
+
         //Width and height in MapPoints for the floorplan
-        let mapPointsPerMeter = MKMapPointsPerMeterAtLatitude(floorPlan.center.latitude)
-        let widthMapPoints = floorPlan.widthMeters * Float(mapPointsPerMeter)
-        let heightMapPoints = floorPlan.heightMeters * Float(mapPointsPerMeter)
-        
+        let mapPointsPerMeter = MKMapPointsPerMeterAtLatitude(floorPlan!.center.latitude)
+        let widthMapPoints = floorPlan!.widthMeters * Float(mapPointsPerMeter)
+        let heightMapPoints = floorPlan!.heightMeters * Float(mapPointsPerMeter)
+
         let cgRect = CGRect(x: 0, y: 0, width: CGFloat(widthMapPoints), height: CGFloat(heightMapPoints))
-        let a = degreesToRadians(self.floorPlan.bearing)
+        let a = degreesToRadians(self.floorPlan!.bearing)
         rotated = cgRect.applying(CGAffineTransform(rotationAngle: CGFloat(a)));
-        flooorPlanOverlay = MapOverlay(floorPlan: floorPlan, andRotatedRect: rotated)
-        map.add(flooorPlanOverlay!)
+        floorPlanOverlay = MapOverlay(floorPlan: floorPlan!, andRotatedRect: rotated)
+        map.add(floorPlanOverlay!)
         updateCircles()
     }
-    
+
     // Function for rendering overlay objects
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         var circleRenderer:MKCircleRenderer!
-        
+
+        if let overlay = overlay as? MKPolyline {
+            let polylineRenderer = MKPolylineRenderer.init(polyline: overlay)
+            polylineRenderer.strokeColor = UIColor.init(red: 0.08627, green: 0.5059, blue: 0.9843, alpha: 0.7)
+            polylineRenderer.lineWidth = 3
+
+            return polylineRenderer
+        }
+
         // If it is possible to convert overlay to MKCircle then render the circle with given properties. Else if the overlay is class of MapOverlay set up its own MapOverlayRenderer. Else render red circle.
-        if overlay is MapOverlay {
-            let overlayView = MapOverlayRenderer(overlay: overlay, overlayImage: fpImage, fp: floorPlan, rotated: rotated)
+        if let overlay = overlay as? MKCircle {
+            circleRenderer = MKCircleRenderer(circle: overlay)
+            circleRenderer.fillColor = UIColor(red: 0.08627, green: 0.5059, blue: 0.9843, alpha:0.4)
+            return circleRenderer
+
+        } else if overlay is MapOverlay {
+            let overlayView = MapOverlayRenderer(overlay: overlay, overlayImage: fpImage, fp: floorPlan!, rotated: rotated)
             return overlayView
-            
+
         } else {
             circleRenderer = MKCircleRenderer(overlay: overlay)
-            circleRenderer.fillColor = UIColor.init(red: 0.08627, green: 0.5059, blue: 0.9843, alpha: 0.4)
+            circleRenderer.fillColor = UIColor.init(red: 1, green: 0, blue: 0, alpha: 1.0)
             return circleRenderer
         }
     }
-    
+
     func indoorLocationManager(_ manager: IALocationManager, didUpdateLocations locations: [Any]) {
-        
+
         // Convert last location to IALocation
         let l = locations.last as! IALocation
-        
+
         // Check that the location is not nil
         if let newLocation = l.location?.coordinate {
-            
+
             SVProgressHUD.dismiss()
             currentLocation = l.location
-            
+
             if currentAccuracyCircle != nil {
                 map.remove(currentAccuracyCircle!)
             }
@@ -119,17 +187,17 @@ class IndoorOutdoorViewController: UIViewController, IALocationManagerDelegate, 
                 map.addAnnotation(currentCircle!)
             }
             currentCircle?.coordinate = newLocation
-            
+
             if updateCamera {
                 // Ask Map Kit for a camera that looks at the location from an altitude of 300 meters above the eye coordinates.
                 camera = MKMapCamera(lookingAtCenter: (l.location?.coordinate)!, fromEyeCoordinate: (l.location?.coordinate)!, eyeAltitude: 300)
-                
+
                 // Assign the camera to your map view.
                 map.camera = camera
                 updateCamera = false
             }
         }
-        
+
         if let traceId = manager.extraInfo?[kIATraceId] as? NSString {
             label.text = "TraceID: \(traceId)"
         }
@@ -149,114 +217,122 @@ class IndoorOutdoorViewController: UIViewController, IALocationManagerDelegate, 
         map.add(currentAccuracyCircle!)
         currentCircle?.coordinate = (currentLocation?.coordinate)!
     }
-    
+
     // Fetches image with the given IAFloorplan
     func fetchImage(_ floorPlan:IAFloorPlan) {
-        imageFetch = self.resourceManager.fetchFloorPlanImage(with: floorPlan.imageUrl!, andCompletion: { (data, error) in
-            if (error != nil) {
-                print(error as Any)
-            } else {
-                self.fpImage = UIImage.init(data: data!)!
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            let imageData = try? Data(contentsOf: floorPlan.imageUrl!)
+            if (imageData == nil) {
+                NSLog("Error fetching floor plan image")
+            }
+            // Bounce back to the main thread to update the UI
+            DispatchQueue.main.async {
+                self.fpImage = UIImage.init(data: imageData!)!
                 self.changeMapOverlay()
             }
-        })
+        }
     }
     
+    func indoorLocationManager(_ manager: IALocationManager, didUpdate route: IARoute) {
+        if hasArrivedToDestination(route: route) {
+            self.locationManager.stopMonitoringForWayfinding()
+            self.locationManager.lockIndoors(false)
+            showToast(message: "You have arrived to destination")
+            if routeLine != nil {
+                map.remove(routeLine!)
+            }
+        } else {
+            self.plotRoute(route: route)
+        }
+    }
+    
+    func hasArrivedToDestination(route:IARoute) -> Bool {
+        if (route.legs.count == 0) {
+            return false
+        }
+        let FINISH_THRESHOLD_METERS = 8.0
+        var routeLength = 0.0
+        for leg in route.legs {
+            routeLength += leg.length
+        }
+        return routeLength < FINISH_THRESHOLD_METERS
+    }
+
     func indoorLocationManager(_ manager: IALocationManager, didEnter region: IARegion) {
         
         switch region.type {
         case .iaRegionTypeVenue:
-            map.showsUserLocation = false
-            showToast(text: "Enter region \(region.identifier)")
-
+            showToast(message: "Enter venue \(region.venue?.name)")
         case .iaRegionTypeFloorPlan:
-            
             updateCamera = true
-            
-            if (floorPlanFetch != nil) {
-                floorPlanFetch.cancel()
-                floorPlanFetch = nil
+            if (region.floorplan != nil) {
+                self.floorPlan = region.floorplan!
+                self.fetchImage(region.floorplan!)
             }
-            
-            // Fetches the floorplan for the given region identifier
-            floorPlanFetch = self.resourceManager.fetchFloorPlan(withId: region.identifier, andCompletion: { (floorplan, error) in
-                
-                if (error == nil) {
-                    self.floorPlan = floorplan!
-                    self.fetchImage(floorplan!)
-                } else {
-                    print("There was an error during floorplan fetch: ", error as Any)
-                }
-            })
         default:
             return
         }
+    }
+
+    // Authenticate to IndoorAtlas services and request location updates
+    func requestLocation() {
+
+        locationManager.delegate = self
+        
+        // Set the desired accuracy of location updates to one of the following:
+        // kIALocationAccuracyBest : High accuracy mode (default)
+        // kIALocationAccuracyLow : Low accuracy mode, uses less power
+        locationManager.desiredAccuracy = ia_location_accuracy.iaLocationAccuracyBest
+
+        locationManager.startUpdatingLocation()
     }
     
     func indoorLocationManager(_ manager: IALocationManager, didExitRegion region: IARegion) {
         switch region.type {
         case .iaRegionTypeVenue:
-            showToast(text: "Exit Venue \(region.identifier)")
-            map.showsUserLocation = true
-            if currentCircle != nil {
-                map.removeAnnotation(currentCircle!)
-            }
-            if currentAccuracyCircle != nil {
-                map.remove(currentAccuracyCircle!)
-            }
+            showToast(message: "Exit Venue \(region.venue?.name)")
         case .iaRegionTypeFloorPlan:
-            if flooorPlanOverlay != nil {
-                map.remove(flooorPlanOverlay!)
+            if floorPlanOverlay != nil {
+                map.remove(floorPlanOverlay!)
             }
         default:
             return
         }
     }
-    // Authenticate to IndoorAtlas services and request location updates
-    func requestLocation() {
-        
-        locationManager.delegate = self
-        
-        resourceManager = IAResourceManager(locationManager: locationManager)!
-        
-        locationManager.startUpdatingLocation()
-    }
-    
+
     // Called when view will appear and sets up the map view and its bounds and delegate. Also requests location
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         updateCamera = true
-        
+
         map = MKMapView()
         map.frame = view.bounds
         map.delegate = self
         map.isPitchEnabled = false
         view.addSubview(map)
         view.sendSubview(toBack: map)
-        
+
         label.frame = CGRect(x: 8, y: 14, width: view.bounds.width - 16, height: 42)
         label.textAlignment = NSTextAlignment.center
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
         view.addSubview(label)
-        
-        
-        map.showsUserLocation = true
-        
+
         requestLocation()
     }
-    
+
     // Called when view will disappear and will remove the map from the view and sets its delegate to nil
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        
+
         locationManager.stopUpdatingLocation()
         locationManager.delegate = nil
-        
+
         map.delegate = nil
         map.removeFromSuperview()
         label.removeFromSuperview()
-        
+
         SVProgressHUD.dismiss()
     }
     
@@ -274,7 +350,7 @@ class IndoorOutdoorViewController: UIViewController, IALocationManagerDelegate, 
         
         map.setRegion(region, animated: true)
     }
-    
+
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? LocationAnnotation {
             var type = ""
@@ -316,33 +392,68 @@ class IndoorOutdoorViewController: UIViewController, IALocationManagerDelegate, 
         }
         return nil
     }
+
+    func handleLongPress(pressGesture: UILongPressGestureRecognizer) {
+        if pressGesture.state != UIGestureRecognizerState.began { return }
+
+        let touchPoint = pressGesture.location(in: map)
+        let coord = map.convert(touchPoint, toCoordinateFrom: map)
+        
+        // Wayfinding requests are meaningful only when positioning on a floor plan
+        if (self.floorPlan != nil && self.floorPlan!.floor != nil) {
+            let req = IAWayfindingRequest()
+            req.coordinate = coord
+            req.floor = self.floorPlan!.floor!.level
+            self.locationManager.lockIndoors(true)
+            self.locationManager.startMonitoring(forWayfinding: req)
+        }
+    }
+
+
+    func plotRoute(route:IARoute) {
+        if route.legs.count == 0 { return }
+
+        var coordinateArray = [CLLocationCoordinate2D]()
+        var coord = CLLocationCoordinate2D()
+        var leg = route.legs[0]
+
+        coord.latitude = leg.begin.coordinate.latitude;
+        coord.longitude = leg.begin.coordinate.longitude
+
+        coordinateArray.append(coord)
+
+        for i in 0..<route.legs.count {
+            leg = route.legs[i]
+            coord.latitude = leg.end.coordinate.latitude
+            coord.longitude = leg.end.coordinate.longitude
+            coordinateArray.append(coord)
+        }
+
+        if routeLine != nil {
+            map.remove(routeLine!)
+        }
+
+        routeLine = MKPolyline.init(coordinates: coordinateArray, count: route.legs.count + 1)
+        map.add(routeLine!)
+    }
     
-    func showToast(text:String) {
-        let toastLabel =
-            UILabel(frame:
-                CGRect(x: view.frame.size.width/2 - 150,
-                       y: view.frame.size.height/2 - 40,
-                       width: 300,
-                       height: 35))
-        toastLabel.backgroundColor = UIColor.black
-        view.addSubview(toastLabel)
-        toastLabel.alpha = 1.0
+    
+    func showToast(message : String) {
+            
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 150, y: self.view.frame.size.height-40, width: 300, height: 35))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.textAlignment = .center;
+        toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
+        toastLabel.text = message
+        toastLabel.alpha = 0.8
         toastLabel.layer.cornerRadius = 10;
-        toastLabel.clipsToBounds = true
-        
-        let textLabel = UILabel(frame: CGRect(x: toastLabel.frame.origin.x + 10, y: toastLabel.frame.origin.y - 2, width: toastLabel.frame.size.width - 20, height: toastLabel.frame.size.height))
-        textLabel.text = text
-        textLabel.textColor = UIColor.white
-        textLabel.textAlignment = NSTextAlignment.center
-        textLabel.adjustsFontSizeToFitWidth = true
-        textLabel.clipsToBounds = true
-        
-        view.addSubview(textLabel)
-        UIView.animate(withDuration: 5.0, animations: {
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 3.0, delay: 0.1, options: .curveEaseOut, animations: {
             toastLabel.alpha = 0.0
-        }, completion:{ (finished) in
+        }, completion: {(isCompleted) in
             toastLabel.removeFromSuperview()
-            textLabel.removeFromSuperview()
-        } )
+        })
     }
 }

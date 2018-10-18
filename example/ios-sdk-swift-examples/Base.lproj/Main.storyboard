@@ -1,35 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="g27-Da-wMb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="g27-Da-wMb">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Apple Maps Overlay-->
-        <scene sceneID="Hvz-2R-5r0">
-            <objects>
-                <viewController id="dJS-pp-0kt" customClass="AppleMapsOverlayViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="VyB-yB-oDF"/>
-                        <viewControllerLayoutGuide type="bottom" id="GJ9-Ve-yKF"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="0Jq-61-xQE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <gestureRecognizers/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Apple Maps Overlay" id="cki-7i-meo"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bMh-MP-xu1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1180" y="-927.88605697151434"/>
-        </scene>
         <!--IndoorAtlas SDK Examples-->
         <scene sceneID="Hhz-dn-BVO">
             <objects>
@@ -72,55 +52,13 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="IndoorAtlas SDK Examples" id="kb3-C2-UfZ"/>
                     <connections>
-                        <segue destination="FGP-vm-cP2" kind="show" identifier="Console Print" id="Ffi-jb-vOr"/>
                         <segue destination="VQ0-BK-KM0" kind="show" identifier="Image View" id="88F-oO-G2e"/>
-                        <segue destination="0YH-PY-FFb" kind="show" identifier="Apple Maps" id="gC1-vy-QZT"/>
-                        <segue destination="dJS-pp-0kt" kind="show" identifier="Apple Maps Overlay" id="O5g-Ts-rcX"/>
-                        <segue destination="6xm-1k-Myd" kind="show" identifier="Indoor-Outdoor" id="A9U-cZ-hiy"/>
-                        <segue destination="vEa-U6-82o" kind="show" identifier="Wayfinding" id="081-t5-URO"/>
+                        <segue destination="vEa-U6-82o" kind="show" identifier="Map View" id="081-t5-URO"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ynp-1J-uT6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="384.80000000000001" y="-311.69415292353824"/>
-        </scene>
-        <!--Indoor-Outdoor-->
-        <scene sceneID="j1D-5f-6rC">
-            <objects>
-                <viewController id="6xm-1k-Myd" customClass="IndoorOutdoorViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="mHb-2r-tkk"/>
-                        <viewControllerLayoutGuide type="bottom" id="neR-pC-l2t"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8Fa-yc-1MY">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Indoor-Outdoor" id="o7d-sL-8fA"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="UyX-ez-dFs" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-609" y="575"/>
-        </scene>
-        <!--Apple Maps-->
-        <scene sceneID="OkN-v5-fMP">
-            <objects>
-                <viewController id="0YH-PY-FFb" customClass="AppleMapsViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="JUU-Hd-7WJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="ZVk-m0-xok"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Plk-BN-7Gm">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Apple Maps" id="406-Pd-UpX"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CNT-jl-9Dr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="111" y="575"/>
         </scene>
         <!--Image View-->
         <scene sceneID="iiE-uq-9VF">
@@ -141,10 +79,10 @@
             </objects>
             <point key="canvasLocation" x="818" y="576"/>
         </scene>
-        <!--Wayfinding-->
+        <!--MapView-->
         <scene sceneID="O44-6D-VMg">
             <objects>
-                <viewController title="Wayfinding" id="vEa-U6-82o" customClass="WayfindingViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="MapView" id="vEa-U6-82o" customClass="MapViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GJx-jN-PKI"/>
                         <viewControllerLayoutGuide type="bottom" id="oND-iG-0Oa"/>
@@ -158,42 +96,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qSo-om-RdP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1516" y="575"/>
-        </scene>
-        <!--Console Log-->
-        <scene sceneID="tg3-qt-V74">
-            <objects>
-                <viewController id="FGP-vm-cP2" customClass="ConsoleViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Zib-n1-XRF"/>
-                        <viewControllerLayoutGuide type="bottom" id="djZ-Hs-NNw"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="yLW-RE-zf3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="GdF-IY-Xs7">
-                                <rect key="frame" x="16" y="0.0" width="343" height="583"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="djZ-Hs-NNw" firstAttribute="top" secondItem="GdF-IY-Xs7" secondAttribute="bottom" constant="20" id="5hi-9a-gfG"/>
-                            <constraint firstItem="GdF-IY-Xs7" firstAttribute="top" secondItem="Zib-n1-XRF" secondAttribute="bottom" id="CdD-k4-e3l"/>
-                            <constraint firstItem="GdF-IY-Xs7" firstAttribute="leading" secondItem="yLW-RE-zf3" secondAttribute="leadingMargin" id="is1-rz-eRG"/>
-                            <constraint firstItem="GdF-IY-Xs7" firstAttribute="trailing" secondItem="yLW-RE-zf3" secondAttribute="trailingMargin" id="z35-po-rQE"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Console Log" id="jkF-WU-tcx"/>
-                    <connections>
-                        <outlet property="logView" destination="GdF-IY-Xs7" id="O3S-fT-fKY"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="epn-Jl-jew" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1180" y="-233.43328335832086"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Boy-Z0-qm7">

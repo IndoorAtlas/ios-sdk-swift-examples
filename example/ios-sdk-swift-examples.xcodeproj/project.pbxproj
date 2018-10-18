@@ -8,18 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		29C63965501CBD4771C78781 /* Pods_ios_sdk_swift_examples.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51BEBAA7CF12D82EF91D31DC /* Pods_ios_sdk_swift_examples.framework */; };
-		BC36D950202DB501001273F4 /* wayfinding-graph.json in Resources */ = {isa = PBXBuildFile; fileRef = BC36D94F202DB501001273F4 /* wayfinding-graph.json */; };
-		BC36D952202DB52E001273F4 /* WayfindingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC36D951202DB52E001273F4 /* WayfindingViewController.swift */; };
+		85E332172170763D00899479 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E332162170763D00899479 /* MapViewController.swift */; };
 		BC4017AF1CBCF00D007332F4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4017AE1CBCF00D007332F4 /* AppDelegate.swift */; };
 		BC4017B41CBCF00D007332F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC4017B21CBCF00D007332F4 /* Main.storyboard */; };
 		BC4017B61CBCF00D007332F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC4017B51CBCF00D007332F4 /* Assets.xcassets */; };
 		BC4017B91CBCF00D007332F4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC4017B71CBCF00D007332F4 /* LaunchScreen.storyboard */; };
 		BC6BC64C1CC4AC6E00D49D4F /* ExampleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6BC64B1CC4AC6E00D49D4F /* ExampleTableViewCell.swift */; };
 		BC6BC64E1CC4B0C100D49D4F /* ExampleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6BC64D1CC4B0C100D49D4F /* ExampleTableViewController.swift */; };
-		BC6EACBA1FA86FFD001A5B11 /* IndoorOutdoorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EACB91FA86FFD001A5B11 /* IndoorOutdoorViewController.swift */; };
-		BC98A9C81CBCF10F0096B50C /* AppleMapsOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98A9C71CBCF10F0096B50C /* AppleMapsOverlayViewController.swift */; };
-		BC98A9CA1CBCF1210096B50C /* AppleMapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98A9C91CBCF1210096B50C /* AppleMapsViewController.swift */; };
-		BC98A9CC1CBCF12F0096B50C /* ConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98A9CB1CBCF12F0096B50C /* ConsoleViewController.swift */; };
 		BC98A9CE1CBCF13D0096B50C /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98A9CD1CBCF13D0096B50C /* ImageViewController.swift */; };
 		BC98A9D01CBCF20B0096B50C /* ApiKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98A9CF1CBCF20B0096B50C /* ApiKeys.swift */; };
 /* End PBXBuildFile section */
@@ -28,8 +23,7 @@
 		37D70F96E9627BD7CA6C0887 /* Pods-ios-sdk-swift-examples.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-sdk-swift-examples.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios-sdk-swift-examples/Pods-ios-sdk-swift-examples.debug.xcconfig"; sourceTree = "<group>"; };
 		3D87ADC8456ADF0CD3DD2634 /* Pods-ios-sdk-swift-examples.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-sdk-swift-examples.release.xcconfig"; path = "Pods/Target Support Files/Pods-ios-sdk-swift-examples/Pods-ios-sdk-swift-examples.release.xcconfig"; sourceTree = "<group>"; };
 		51BEBAA7CF12D82EF91D31DC /* Pods_ios_sdk_swift_examples.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_sdk_swift_examples.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BC36D94F202DB501001273F4 /* wayfinding-graph.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "wayfinding-graph.json"; path = "Examples/wayfinding-graph.json"; sourceTree = "<group>"; };
-		BC36D951202DB52E001273F4 /* WayfindingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WayfindingViewController.swift; path = Examples/WayfindingViewController.swift; sourceTree = "<group>"; };
+		85E332162170763D00899479 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Examples/MapViewController.swift; sourceTree = "<group>"; };
 		BC4017AB1CBCF00D007332F4 /* swift-examples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swift-examples.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC4017AE1CBCF00D007332F4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC4017B31CBCF00D007332F4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -38,10 +32,6 @@
 		BC4017BA1CBCF00D007332F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC6BC64B1CC4AC6E00D49D4F /* ExampleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTableViewCell.swift; sourceTree = "<group>"; };
 		BC6BC64D1CC4B0C100D49D4F /* ExampleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTableViewController.swift; sourceTree = "<group>"; };
-		BC6EACB91FA86FFD001A5B11 /* IndoorOutdoorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IndoorOutdoorViewController.swift; path = Examples/IndoorOutdoorViewController.swift; sourceTree = "<group>"; };
-		BC98A9C71CBCF10F0096B50C /* AppleMapsOverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleMapsOverlayViewController.swift; path = Examples/AppleMapsOverlayViewController.swift; sourceTree = "<group>"; };
-		BC98A9C91CBCF1210096B50C /* AppleMapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleMapsViewController.swift; path = Examples/AppleMapsViewController.swift; sourceTree = "<group>"; };
-		BC98A9CB1CBCF12F0096B50C /* ConsoleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConsoleViewController.swift; path = Examples/ConsoleViewController.swift; sourceTree = "<group>"; };
 		BC98A9CD1CBCF13D0096B50C /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageViewController.swift; path = Examples/ImageViewController.swift; sourceTree = "<group>"; };
 		BC98A9CF1CBCF20B0096B50C /* ApiKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiKeys.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -112,12 +102,7 @@
 		BC4017C01CBCF016007332F4 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
-				BC98A9C71CBCF10F0096B50C /* AppleMapsOverlayViewController.swift */,
-				BC6EACB91FA86FFD001A5B11 /* IndoorOutdoorViewController.swift */,
-				BC98A9C91CBCF1210096B50C /* AppleMapsViewController.swift */,
-				BC36D94F202DB501001273F4 /* wayfinding-graph.json */,
-				BC36D951202DB52E001273F4 /* WayfindingViewController.swift */,
-				BC98A9CB1CBCF12F0096B50C /* ConsoleViewController.swift */,
+				85E332162170763D00899479 /* MapViewController.swift */,
 				BC98A9CD1CBCF13D0096B50C /* ImageViewController.swift */,
 			);
 			name = Examples;
@@ -135,7 +120,6 @@
 				BC4017A81CBCF00D007332F4 /* Frameworks */,
 				BC4017A91CBCF00D007332F4 /* Resources */,
 				3EAD004314E36ACD0608D4D4 /* [CP] Embed Pods Frameworks */,
-				AB0339112EA527CA7BAF6ACD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -158,9 +142,8 @@
 				TargetAttributes = {
 					BC4017AA1CBCF00D007332F4 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = "";
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -187,7 +170,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC36D950202DB501001273F4 /* wayfinding-graph.json in Resources */,
 				BC4017B91CBCF00D007332F4 /* LaunchScreen.storyboard in Resources */,
 				BC4017B61CBCF00D007332F4 /* Assets.xcassets in Resources */,
 				BC4017B41CBCF00D007332F4 /* Main.storyboard in Resources */,
@@ -203,28 +185,18 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ios-sdk-swift-examples/Pods-ios-sdk-swift-examples-frameworks.sh",
+				"${PODS_ROOT}/IndoorAtlas/indooratlas-ios-sdk/IndoorAtlas.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IndoorAtlas.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ios-sdk-swift-examples/Pods-ios-sdk-swift-examples-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AB0339112EA527CA7BAF6ACD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ios-sdk-swift-examples/Pods-ios-sdk-swift-examples-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B3F62799147A638622EA9FEC /* [CP] Check Pods Manifest.lock */ = {
@@ -233,13 +205,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ios-sdk-swift-examples-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -250,15 +225,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC98A9D01CBCF20B0096B50C /* ApiKeys.swift in Sources */,
-				BC6EACBA1FA86FFD001A5B11 /* IndoorOutdoorViewController.swift in Sources */,
 				BC4017AF1CBCF00D007332F4 /* AppDelegate.swift in Sources */,
-				BC98A9CA1CBCF1210096B50C /* AppleMapsViewController.swift in Sources */,
 				BC6BC64C1CC4AC6E00D49D4F /* ExampleTableViewCell.swift in Sources */,
-				BC98A9CC1CBCF12F0096B50C /* ConsoleViewController.swift in Sources */,
-				BC36D952202DB52E001273F4 /* WayfindingViewController.swift in Sources */,
 				BC6BC64E1CC4B0C100D49D4F /* ExampleTableViewController.swift in Sources */,
 				BC98A9CE1CBCF13D0096B50C /* ImageViewController.swift in Sources */,
-				BC98A9C81CBCF10F0096B50C /* AppleMapsOverlayViewController.swift in Sources */,
+				85E332172170763D00899479 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,7 +352,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "ios-sdk-swift-examples/Info.plist";
@@ -401,7 +372,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "ios-sdk-swift-examples/Info.plist";
