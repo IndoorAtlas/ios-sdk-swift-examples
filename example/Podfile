@@ -1,7 +1,7 @@
 use_frameworks!
 
 source 'https://github.com/CocoaPods/Specs.git'
-source 'git@github.com:IndoorAtlas/CocoaPods-Specs.git'
+source 'https://github.com/IndoorAtlas/CocoaPods-Specs.git'
 
 target 'ios-sdk-swift-examples' do
 
