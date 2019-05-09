@@ -393,7 +393,7 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
         return nil
     }
 
-    func handleLongPress(pressGesture: UILongPressGestureRecognizer) {
+    @objc func handleLongPress(pressGesture: UILongPressGestureRecognizer) {
         if pressGesture.state != UIGestureRecognizerState.began { return }
 
         let touchPoint = pressGesture.location(in: map)
