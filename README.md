@@ -44,12 +44,8 @@ If you are not using CocoaPods, the IndoorAtlas SDK framework can be downloaded 
 
 These examples are included in the app:
 
-* Apple Maps: Shows the IndoorAtlas blue dot location overlaid on Apple Maps.
-* Apple Maps Overlay: Shows the location together with the associated floor plan bitmap overlay on the world map.
+* Map View: Shows the location together with the associated floor plan bitmap overlay on the world map. This example also includes wayfinding. 
 * Image View: Floor plan bitmap image view with the blue dot location.
-* Console Prints: Shows console printout provided by the SDK.
-* Indoor-Outdoor: Example of transitions from unmapped (outdoor) spaces to mapped (indoor) spaces.
-* Wayfinding: Example of how to use IndoorAtlas Wayfinding framework
 
 ## Documentation
 
@@ -57,7 +53,7 @@ The IndoorAtlas SDK API documentation is available in the documentation portal: 
 
 #### Known issues
 
-* iOS automatic floor plan recognition is not always reliable. It can be improved by using ambient beacons, auxiliary information sources, or UI design choices. Otherwise, we  recommend to set floorplan id directly when possible.
+* iOS automatic floor plan recognition is not always reliable. It can be improved by using ambient beacons, auxiliary information sources, or UI design choices. 
 
 ## SDK Changelog
 
