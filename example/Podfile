@@ -1,11 +1,18 @@
 use_frameworks!
+platform :ios, '9.0'
 
 source 'https://github.com/CocoaPods/Specs.git'
 source 'https://github.com/IndoorAtlas/CocoaPods-Specs.git'
 
 target 'ios-sdk-swift-examples' do
-
-  pod 'IndoorAtlas', '3.2.1'
+  pod 'IndoorAtlas', '3.3.5'
   pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
+end
 
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+    end
+  end
 end
