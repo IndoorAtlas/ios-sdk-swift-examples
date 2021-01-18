@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        guard kAPIKey.characters.count > 0 || kAPISecret.characters.count > 0 else { print("Configure API key and API secret inside ApiKeys.swift"); return false}
+        guard kAPIKey.count > 0 else { print("Configure API key inside ApiKeys.swift"); return false}
         
         authenticateIALocationManager()
         
@@ -26,8 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Get IALocationManager shared instance
         let manager = IALocationManager.sharedInstance()
     
-        // Set IndoorAtlas API key and secret
-        manager.setApiKey(kAPIKey, andSecret: kAPISecret)
+        // Set IndoorAtlas API key
+        manager.setApiKey(kAPIKey, andSecret: "")
     }
 }
 
