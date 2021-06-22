@@ -46,8 +46,8 @@ class ImageViewController: UIViewController, IALocationManagerDelegate {
         
         let size = CGFloat(accuracy * Double(conversion))
         
-        self.view.bringSubview(toFront: self.accuracyCircle)
-        self.view.bringSubview(toFront: self.circle)
+        self.view.bringSubviewToFront(self.accuracyCircle)
+        self.view.bringSubviewToFront(self.circle)
         
         circle.isHidden = false
         accuracyCircle.isHidden = false

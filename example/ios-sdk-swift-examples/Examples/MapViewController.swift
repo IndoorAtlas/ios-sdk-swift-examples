@@ -48,8 +48,8 @@ class MapOverlay: NSObject, MKOverlay {
         coordinate = floorPlan.center
         
         // Area coordinates for the overlay
-        let topLeft = MKMapPointForCoordinate(floorPlan.topLeft)
-        boundingMapRect = MKMapRectMake(topLeft.x + Double(rotated.origin.x), topLeft.y + Double(rotated.origin.y), Double(rotated.size.width), Double(rotated.size.height))
+        let topLeft = MKMapPoint(floorPlan.topLeft)
+        boundingMapRect = MKMapRect(x: topLeft.x + Double(rotated.origin.x), y: topLeft.y + Double(rotated.origin.y), width: Double(rotated.size.width), height: Double(rotated.size.height))
     }
 }
 
@@ -130,7 +130,7 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
         let a = degreesToRadians(self.floorPlan!.bearing)
         rotated = cgRect.applying(CGAffineTransform(rotationAngle: CGFloat(a)));
         floorPlanOverlay = MapOverlay(floorPlan: floorPlan!, andRotatedRect: rotated)
-        map.add(floorPlanOverlay!)
+        map.addOverlay(floorPlanOverlay!)
         updateCircles()
     }
 
@@ -175,11 +175,11 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
             currentLocation = l.location
 
             if currentAccuracyCircle != nil {
-                map.remove(currentAccuracyCircle!)
+                map.removeOverlay(currentAccuracyCircle!)
             }
             
             currentAccuracyCircle = MKCircle(center: newLocation, radius: (l.location?.horizontalAccuracy)!)
-            map.add(currentAccuracyCircle!)
+            map.addOverlay(currentAccuracyCircle!)
             
             // Remove the previous circle overlay and set up a new overlay
             if currentCircle == nil {
@@ -205,7 +205,7 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
     
     func updateCircles() {
         if currentAccuracyCircle != nil {
-            map.remove(currentAccuracyCircle!)
+            map.removeOverlay(currentAccuracyCircle!)
         }
         
         if currentCircle == nil {
@@ -214,7 +214,7 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
         }
         
         currentAccuracyCircle = MKCircle(center: (currentLocation?.coordinate)!, radius: (currentLocation?.horizontalAccuracy)!)
-        map.add(currentAccuracyCircle!)
+        map.addOverlay(currentAccuracyCircle!)
         currentCircle?.coordinate = (currentLocation?.coordinate)!
     }
 
@@ -240,7 +240,7 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
             self.locationManager.lockIndoors(false)
             showToast(message: "You have arrived to destination")
             if routeLine != nil {
-                map.remove(routeLine!)
+                map.removeOverlay(routeLine!)
             }
         } else {
             self.plotRoute(route: route)
@@ -260,10 +260,9 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
     }
 
     func indoorLocationManager(_ manager: IALocationManager, didEnter region: IARegion) {
-        
         switch region.type {
         case .iaRegionTypeVenue:
-            showToast(message: "Enter venue \(region.venue?.name)")
+            showToast(message: "Enter venue \(region.venue!.name)")
         case .iaRegionTypeFloorPlan:
             updateCamera = true
             if (region.floorplan != nil) {
@@ -291,10 +290,10 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
     func indoorLocationManager(_ manager: IALocationManager, didExitRegion region: IARegion) {
         switch region.type {
         case .iaRegionTypeVenue:
-            showToast(message: "Exit Venue \(region.venue?.name)")
+            showToast(message: "Exit Venue \(region.venue!.name)")
         case .iaRegionTypeFloorPlan:
             if floorPlanOverlay != nil {
-                map.remove(floorPlanOverlay!)
+                map.removeOverlay(floorPlanOverlay!)
             }
         default:
             return
@@ -311,7 +310,7 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
         map.delegate = self
         map.isPitchEnabled = false
         view.addSubview(map)
-        view.sendSubview(toBack: map)
+        view.sendSubviewToBack(map)
 
         label.frame = CGRect(x: 8, y: 14, width: view.bounds.width - 16, height: 42)
         label.textAlignment = NSTextAlignment.center
@@ -341,7 +340,7 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
             map.removeAnnotation(currentCircle!)
         }
         if currentAccuracyCircle != nil {
-            map.remove(currentAccuracyCircle!)
+            map.removeOverlay(currentAccuracyCircle!)
         }
         
         let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
@@ -394,7 +393,7 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
     }
 
     @objc func handleLongPress(pressGesture: UILongPressGestureRecognizer) {
-        if pressGesture.state != UIGestureRecognizerState.began { return }
+        if pressGesture.state != UIGestureRecognizer.State.began { return }
 
         let touchPoint = pressGesture.location(in: map)
         let coord = map.convert(touchPoint, toCoordinateFrom: map)
@@ -430,11 +429,11 @@ class MapViewController: UIViewController, IALocationManagerDelegate, MKMapViewD
         }
 
         if routeLine != nil {
-            map.remove(routeLine!)
+            map.removeOverlay(routeLine!)
         }
 
         routeLine = MKPolyline.init(coordinates: coordinateArray, count: route.legs.count + 1)
-        map.add(routeLine!)
+        map.addOverlay(routeLine!)
     }
     
     
