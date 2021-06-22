@@ -34,6 +34,8 @@
 	<string>Platform location requested for better indoor positioning experience.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>For better indoor positioning experience</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Needed for AR positioning</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
