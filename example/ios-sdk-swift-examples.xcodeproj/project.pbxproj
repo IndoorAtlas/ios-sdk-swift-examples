@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		29C63965501CBD4771C78781 /* Pods_ios_sdk_swift_examples.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51BEBAA7CF12D82EF91D31DC /* Pods_ios_sdk_swift_examples.framework */; };
+		492153432681F4C500BAC68D /* ArViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492153422681F4C500BAC68D /* ArViewController.swift */; };
+		4921534D26820F0200BAC68D /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 4921534C26820F0200BAC68D /* Models.scnassets */; };
 		85E332172170763D00899479 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E332162170763D00899479 /* MapViewController.swift */; };
 		BC4017AF1CBCF00D007332F4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4017AE1CBCF00D007332F4 /* AppDelegate.swift */; };
 		BC4017B41CBCF00D007332F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC4017B21CBCF00D007332F4 /* Main.storyboard */; };
@@ -22,6 +24,8 @@
 /* Begin PBXFileReference section */
 		37D70F96E9627BD7CA6C0887 /* Pods-ios-sdk-swift-examples.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-sdk-swift-examples.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios-sdk-swift-examples/Pods-ios-sdk-swift-examples.debug.xcconfig"; sourceTree = "<group>"; };
 		3D87ADC8456ADF0CD3DD2634 /* Pods-ios-sdk-swift-examples.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-sdk-swift-examples.release.xcconfig"; path = "Pods/Target Support Files/Pods-ios-sdk-swift-examples/Pods-ios-sdk-swift-examples.release.xcconfig"; sourceTree = "<group>"; };
+		492153422681F4C500BAC68D /* ArViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ArViewController.swift; path = Examples/ArViewController.swift; sourceTree = "<group>"; };
+		4921534C26820F0200BAC68D /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
 		51BEBAA7CF12D82EF91D31DC /* Pods_ios_sdk_swift_examples.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_sdk_swift_examples.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85E332162170763D00899479 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Examples/MapViewController.swift; sourceTree = "<group>"; };
 		BC4017AB1CBCF00D007332F4 /* swift-examples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swift-examples.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +90,7 @@
 		BC4017AD1CBCF00D007332F4 /* ios-sdk-swift-examples */ = {
 			isa = PBXGroup;
 			children = (
+				4921534C26820F0200BAC68D /* Models.scnassets */,
 				BC4017C01CBCF016007332F4 /* Examples */,
 				BC4017AE1CBCF00D007332F4 /* AppDelegate.swift */,
 				BC98A9CF1CBCF20B0096B50C /* ApiKeys.swift */,
@@ -104,6 +109,7 @@
 			children = (
 				85E332162170763D00899479 /* MapViewController.swift */,
 				BC98A9CD1CBCF13D0096B50C /* ImageViewController.swift */,
+				492153422681F4C500BAC68D /* ArViewController.swift */,
 			);
 			name = Examples;
 			sourceTree = "<group>";
@@ -172,6 +178,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC4017B91CBCF00D007332F4 /* LaunchScreen.storyboard in Resources */,
+				4921534D26820F0200BAC68D /* Models.scnassets in Resources */,
 				BC4017B61CBCF00D007332F4 /* Assets.xcassets in Resources */,
 				BC4017B41CBCF00D007332F4 /* Main.storyboard in Resources */,
 			);
@@ -228,6 +235,7 @@
 				BC98A9D01CBCF20B0096B50C /* ApiKeys.swift in Sources */,
 				BC4017AF1CBCF00D007332F4 /* AppDelegate.swift in Sources */,
 				BC6BC64C1CC4AC6E00D49D4F /* ExampleTableViewCell.swift in Sources */,
+				492153432681F4C500BAC68D /* ArViewController.swift in Sources */,
 				BC6BC64E1CC4B0C100D49D4F /* ExampleTableViewController.swift in Sources */,
 				BC98A9CE1CBCF13D0096B50C /* ImageViewController.swift in Sources */,
 				85E332172170763D00899479 /* MapViewController.swift in Sources */,

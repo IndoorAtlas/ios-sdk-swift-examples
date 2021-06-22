@@ -32,6 +32,9 @@ class ExampleTableViewController: UITableViewController {
     // Loads the example titles which are same as segue IDs
     func loadData() {
         examplesList = ["Map View", "Image View"]
+        if (ARViewController.isSupported()) {
+            examplesList.append("AR View")
+        }
     }
     
     // Sets up the SVProgressHUD with a bit slower animation
