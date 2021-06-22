@@ -15,10 +15,14 @@ class ExampleTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
-        
         loadData()
         setUpHUD()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        get {
+            return UIStatusBarStyle.lightContent
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -65,5 +69,11 @@ class ExampleTableViewController: UITableViewController {
     // Sets the title of the section
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Positioning"
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      let backItem = UIBarButtonItem()
+      backItem.title = ""
+      navigationItem.backBarButtonItem = backItem
     }
 }
