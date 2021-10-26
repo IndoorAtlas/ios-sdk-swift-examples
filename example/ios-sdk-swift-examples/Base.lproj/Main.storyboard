@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="g27-Da-wMb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19158" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="g27-Da-wMb">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19141"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -17,14 +17,14 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExampleTableViewCell" rowHeight="100" id="7nh-OP-euy" customClass="ExampleTableViewCell" customModule="swift_examples" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="44.5" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7nh-OP-euy" id="DNt-ZR-80f">
-                                    <rect key="frame" x="0.0" y="0.0" width="348" height="100"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="349.5" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S8r-vI-snI">
-                                            <rect key="frame" x="16" y="39.5" width="324" height="21"/>
+                                            <rect key="frame" x="16" y="39.5" width="325.5" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -52,6 +52,7 @@
                         <segue destination="VQ0-BK-KM0" kind="show" identifier="Image View" id="88F-oO-G2e"/>
                         <segue destination="vEa-U6-82o" kind="show" identifier="Map View" id="081-t5-URO"/>
                         <segue destination="LhV-gH-ERC" kind="show" identifier="AR View" id="mih-HX-Mgc"/>
+                        <segue destination="4kh-WV-C4Q" kind="show" identifier="Third Party AR View" id="rkn-iP-HMq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ynp-1J-uT6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -137,6 +138,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TWX-oE-32a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-546" y="-312"/>
+        </scene>
+        <!--ThirdPartyArView-->
+        <scene sceneID="od4-rK-7KI">
+            <objects>
+                <viewController title="MapView" id="4kh-WV-C4Q" userLabel="ThirdPartyArView" customClass="ThirdPartyARViewController" customModule="swift_examples" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="x16-fQ-bcp"/>
+                        <viewControllerLayoutGuide type="bottom" id="Xuj-90-IZr"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7Fg-WP-ydf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="AR View" id="9Gs-Au-l9Q"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sbh-uG-HHX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2815" y="574"/>
         </scene>
     </scenes>
 </document>
