@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		29C63965501CBD4771C78781 /* Pods_ios_sdk_swift_examples.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51BEBAA7CF12D82EF91D31DC /* Pods_ios_sdk_swift_examples.framework */; };
+		47D8E3E12727AA6C003708E6 /* ThirdPartyArViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D8E3E02727AA6C003708E6 /* ThirdPartyArViewController.swift */; };
 		492153432681F4C500BAC68D /* ArViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492153422681F4C500BAC68D /* ArViewController.swift */; };
 		4921534D26820F0200BAC68D /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 4921534C26820F0200BAC68D /* Models.scnassets */; };
 		85E332172170763D00899479 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E332162170763D00899479 /* MapViewController.swift */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		37D70F96E9627BD7CA6C0887 /* Pods-ios-sdk-swift-examples.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-sdk-swift-examples.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios-sdk-swift-examples/Pods-ios-sdk-swift-examples.debug.xcconfig"; sourceTree = "<group>"; };
 		3D87ADC8456ADF0CD3DD2634 /* Pods-ios-sdk-swift-examples.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-sdk-swift-examples.release.xcconfig"; path = "Pods/Target Support Files/Pods-ios-sdk-swift-examples/Pods-ios-sdk-swift-examples.release.xcconfig"; sourceTree = "<group>"; };
+		47D8E3E02727AA6C003708E6 /* ThirdPartyArViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyArViewController.swift; sourceTree = "<group>"; };
 		492153422681F4C500BAC68D /* ArViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ArViewController.swift; path = Examples/ArViewController.swift; sourceTree = "<group>"; };
 		4921534C26820F0200BAC68D /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
 		51BEBAA7CF12D82EF91D31DC /* Pods_ios_sdk_swift_examples.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_sdk_swift_examples.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +112,7 @@
 				85E332162170763D00899479 /* MapViewController.swift */,
 				BC98A9CD1CBCF13D0096B50C /* ImageViewController.swift */,
 				492153422681F4C500BAC68D /* ArViewController.swift */,
+				47D8E3E02727AA6C003708E6 /* ThirdPartyArViewController.swift */,
 			);
 			name = Examples;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47D8E3E12727AA6C003708E6 /* ThirdPartyArViewController.swift in Sources */,
 				BC98A9D01CBCF20B0096B50C /* ApiKeys.swift in Sources */,
 				BC4017AF1CBCF00D007332F4 /* AppDelegate.swift in Sources */,
 				BC6BC64C1CC4AC6E00D49D4F /* ExampleTableViewCell.swift in Sources */,

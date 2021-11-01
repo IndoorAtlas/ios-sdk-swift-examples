@@ -34,6 +34,7 @@ class ExampleTableViewController: UITableViewController {
         examplesList = ["Map View", "Image View"]
         if (ARViewController.isSupported()) {
             examplesList.append("AR View")
+            examplesList.append("Third Party AR View")
         }
     }
     
