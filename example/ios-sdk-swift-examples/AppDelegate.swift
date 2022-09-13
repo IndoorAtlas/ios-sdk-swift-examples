@@ -98,6 +98,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // Get IALocationManager shared instance
         let manager = IALocationManager.sharedInstance()
+
+        // Set IndoorAtlas API key
+        manager.setApiKey(kAPIKey, andSecret: "")
         
         // Allows testing IndoorAtlas in background mode
         // See: https://developer.apple.com/documentation/xcode/configuring-background-execution-modes
@@ -106,9 +109,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 manager.allowsBackgroundLocationUpdates = true
             }
         }
-
-        // Set IndoorAtlas API key
-        manager.setApiKey(kAPIKey, andSecret: "")
     }
 }
 
