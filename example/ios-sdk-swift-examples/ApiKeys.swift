@@ -12,7 +12,7 @@ let kAPIKey = ""
 
 // Optional beacon UUIDs for testing beacon wake up
 // Check the AppDelegate how beacon wake up is implemented
-let kBeaconWakeupUuids = []
+let kBeaconWakeupUuids = [String]()
 
 // Logs current IALocation object to the HTTP(S) URL below
 let kBeaconWakeupDebugServer = ""
