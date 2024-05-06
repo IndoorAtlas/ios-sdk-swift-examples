@@ -1,12 +1,12 @@
 use_frameworks!
-platform :ios, '11.0'
+platform :ios, '12.0'
 
 source 'https://github.com/CocoaPods/Specs.git'
 source 'https://github.com/IndoorAtlas/CocoaPods-Specs.git'
 
 target 'ios-sdk-swift-examples' do
-  pod 'IndoorAtlas', '3.6.7'
-  pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
+  pod 'IndoorAtlas', '3.6.9'
+  pod 'SVProgressHUD', '2.3.1'
 end
 
 post_install do |installer|
